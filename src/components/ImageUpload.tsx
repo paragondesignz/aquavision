@@ -245,6 +245,27 @@ function ImageUpload({ onImageUpload }: ImageUploadProps) {
             <img src="/spaces/deck 3.png" alt="Example deck space 3" className="example-space-image" />
             <p className="example-space-label">Outdoor Terrace</p>
           </div>
+          <div 
+            className="example-space-card"
+            onClick={() => handleExampleSelect('/spaces/deck4.png')}
+          >
+            <img src="/spaces/deck4.png" alt="Example deck space 4" className="example-space-image" />
+            <p className="example-space-label">Backyard Pool Area</p>
+          </div>
+          <div 
+            className="example-space-card"
+            onClick={() => handleExampleSelect('/spaces/deck5.png')}
+          >
+            <img src="/spaces/deck5.png" alt="Example deck space 5" className="example-space-image" />
+            <p className="example-space-label">Cozy Courtyard</p>
+          </div>
+          <div 
+            className="example-space-card"
+            onClick={() => handleExampleSelect('/spaces/deck6.png')}
+          >
+            <img src="/spaces/deck6.png" alt="Example deck space 6" className="example-space-image" />
+            <p className="example-space-label">Spacious Deck</p>
+          </div>
         </div>
       </div>
     </div>

@@ -801,20 +801,22 @@ body {
 
 .example-spaces-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
   justify-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .example-space-card {
   background: #1e2139;
   border: 2px solid #2d3748;
   border-radius: 12px;
-  padding: 1rem;
+  padding: 0.75rem;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
-  max-width: 250px;
+  max-width: 220px;
 }
 
 .example-space-card:hover {
@@ -825,10 +827,10 @@ body {
 
 .example-space-image {
   width: 100%;
-  height: 140px;
+  height: 120px;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .example-space-label {
