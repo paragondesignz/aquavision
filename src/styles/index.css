@@ -438,8 +438,16 @@ body {
   image-rendering: -webkit-optimize-contrast;
   /* Center the image in its container */
   margin: 0 auto;
-  /* Use contain to maintain aspect ratio without cropping */
-  object-fit: contain;
+}
+
+.image-disclaimer {
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  text-align: center;
+  font-style: italic;
+  opacity: 0.8;
 }
 
 /* Mobile responsive adjustments */

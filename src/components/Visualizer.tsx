@@ -192,11 +192,16 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
         )}
         
         {resultImage ? (
-          <img 
-            src={resultImage} 
-            alt="Spa visualization" 
-            className="result-image"
-          />
+          <>
+            <img 
+              src={resultImage} 
+              alt="Spa visualization" 
+              className="result-image"
+            />
+            <p className="image-disclaimer">
+              Generated images may not be to scale and are not intended for planning purposes
+            </p>
+          </>
         ) : (
           <img 
             src={uploadedImage.url} 
