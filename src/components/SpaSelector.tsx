@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { SpaModel } from '../types'
+import { SpaModel, UploadedImage } from '../types'
 import { spaModels } from '../data/spaModels'
 
 interface SpaSelectorProps {
   onSpaSelect: (spa: SpaModel) => void
+  uploadedImage: UploadedImage | null
 }
 
-function SpaSelector({ onSpaSelect }: SpaSelectorProps) {
+function SpaSelector({ onSpaSelect, uploadedImage }: SpaSelectorProps) {
   const [selectedSpa, setSelectedSpa] = useState<SpaModel | null>(null)
   const [filterSize, setFilterSize] = useState<'all' | 'small' | 'medium' | 'large'>('all')
   const [filterShape, setFilterShape] = useState<'all' | 'round' | 'square' | 'rectangular'>('all')
@@ -42,7 +43,20 @@ function SpaSelector({ onSpaSelect }: SpaSelectorProps) {
 
   return (
     <div className="spa-selector">
-      <div className="filters">
+      {uploadedImage && (
+        <div className="space-preview">
+          <h2>Your Space</h2>
+          <img 
+            src={uploadedImage.url} 
+            alt="Uploaded space" 
+            className="space-preview-image"
+          />
+        </div>
+      )}
+      
+      <div className="spa-selection-panel">
+        <h2>Choose Your Spa</h2>
+        <div className="filters">
         <div className="filter-group">
           <label>Size:</label>
           <select 
@@ -68,9 +82,8 @@ function SpaSelector({ onSpaSelect }: SpaSelectorProps) {
             <option value="rectangular">Rectangular</option>
           </select>
         </div>
-      </div>
 
-      <div className="spa-grid">
+        <div className="spa-grid">
         {filteredModels.map(spa => (
           <div 
             key={spa.id}
@@ -86,9 +99,9 @@ function SpaSelector({ onSpaSelect }: SpaSelectorProps) {
             </div>
           </div>
         ))}
-      </div>
+        </div>
 
-      {selectedSpa && (
+        {selectedSpa && (
         <div className="selection-panel">
           <div className="selected-spa-info">
             <h3>Selected: {selectedSpa.name}</h3>
@@ -102,7 +115,8 @@ function SpaSelector({ onSpaSelect }: SpaSelectorProps) {
             Continue with {selectedSpa.name}
           </button>
         </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

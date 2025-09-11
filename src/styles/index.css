@@ -271,6 +271,44 @@ body {
 
 .spa-selector {
   width: 100%;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.space-preview {
+  flex: 0 0 300px;
+  background: #1a1a3a;
+  border: 1px solid #2d2d5a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.space-preview h2 {
+  color: #ffffff;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.space-preview-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #2d2d5a;
+}
+
+.spa-selection-panel {
+  flex: 1;
+}
+
+.spa-selection-panel h2 {
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .filters {
@@ -776,17 +814,18 @@ body {
 }
 
 .example-spaces {
-  max-width: 800px;
-  margin: 2rem auto 0;
-  padding: 2rem;
-  background: rgba(30, 33, 57, 0.6);
-  border-radius: 12px;
-  border: 1px solid #2d3748;
+  max-width: 1000px;
+  margin: 3rem auto 0;
+  padding: 2.5rem;
+  background: rgba(26, 26, 58, 0.8);
+  border-radius: 16px;
+  border: 1px solid rgb(255, 178, 107, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .example-spaces-title {
   color: #ffffff;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
   text-align: center;
   margin-bottom: 0.5rem;
@@ -801,8 +840,8 @@ body {
 
 .example-spaces-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
   justify-items: center;
   max-width: 1200px;
   margin: 0 auto;
@@ -811,12 +850,13 @@ body {
 .example-space-card {
   background: #1e2139;
   border: 2px solid #2d3748;
-  border-radius: 12px;
-  padding: 0.75rem;
+  border-radius: 16px;
+  padding: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
-  max-width: 220px;
+  max-width: 250px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .example-space-card:hover {
@@ -827,9 +867,9 @@ body {
 
 .example-space-image {
   width: 100%;
-  height: 120px;
+  height: 140px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 0.75rem;
 }
 
@@ -1054,5 +1094,21 @@ body {
   
   .quick-commands {
     grid-template-columns: 1fr;
+  }
+  
+  /* Spa selector responsive layout */
+  .spa-selector {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .space-preview {
+    flex: none;
+    max-width: none;
+    width: 100%;
+  }
+  
+  .space-preview-image {
+    height: 180px;
   }
 }
