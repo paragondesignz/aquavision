@@ -293,15 +293,17 @@ body {
 
 .spa-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
   margin-bottom: 2rem;
+  max-width: 1400px;
+  margin: 0 auto 2rem auto;
 }
 
 .spa-card {
   border: 2px solid #2d3748;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   cursor: pointer;
   transition: all 0.3s;
   background: #1e2139;
@@ -321,29 +323,30 @@ body {
 
 .spa-image {
   width: 100%;
-  height: 200px;
+  height: 120px;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 .spa-name {
   margin-bottom: 0.5rem;
   font-weight: 700;
+  font-size: 1rem;
   color: #ffffff;
 }
 
 .spa-details p {
   color: #94a3b8;
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
 }
 
 .spa-price {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: rgb(255, 178, 107);
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 .spa-tags {
@@ -919,7 +922,7 @@ body {
   
   /* Better spacing for spa selector */
   .spa-card {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
   /* Improve step indicators */

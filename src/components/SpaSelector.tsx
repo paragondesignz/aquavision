@@ -82,16 +82,8 @@ function SpaSelector({ onSpaSelect }: SpaSelectorProps) {
             <div className="spa-details">
               <p>Capacity: {spa.capacity} people</p>
               <p>Size: {spa.dimensions.length}m × {spa.dimensions.width}m</p>
-              {spa.sku && <p>SKU: {spa.sku}</p>}
               <p className="spa-price">${spa.price.toLocaleString()}</p>
             </div>
-            {spa.tags && spa.tags.length > 0 && (
-              <div className="spa-tags">
-                {spa.tags.map(tag => (
-                  <span key={tag} className="spa-tag">{tag}</span>
-                ))}
-              </div>
-            )}
           </div>
         ))}
       </div>

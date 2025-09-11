@@ -17,7 +17,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     rotation: 0
   })
   const [resultImage, setResultImage] = useState<string | null>(null)
-  const [timeOfDay, setTimeOfDay] = useState(12) // 24-hour format, 12 = noon
+  const [timeOfDay, setTimeOfDay] = useState(12) // 24-hour format, 12 = noon, range 7-22
   const [tipIndex, setTipIndex] = useState(0)
   const [imageDimensions, setImageDimensions] = useState<{width: number, height: number} | null>(null)
 
@@ -32,15 +32,14 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
   ]
 
   const getTimeDescription = (hour: number): string => {
-    // New Zealand time descriptions
-    if (hour >= 6 && hour < 8) return 'sunrise'
+    // New Zealand time descriptions for daylight hours only (7am-10pm)
+    if (hour >= 7 && hour < 8) return 'sunrise'
     if (hour >= 8 && hour < 11) return 'morning'
     if (hour >= 11 && hour < 15) return 'midday'
     if (hour >= 15 && hour < 18) return 'afternoon'
     if (hour >= 18 && hour < 20) return 'golden hour'
-    if (hour >= 20 && hour < 22) return 'sunset/dusk'
-    if (hour >= 22 || hour < 6) return 'night'
-    return 'dawn'
+    if (hour >= 20 && hour <= 22) return 'sunset/dusk'
+    return 'daylight'
   }
 
   const formatTime12Hour = (hour: number): string => {
@@ -51,8 +50,8 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
   }
 
   const getLightingPrompt = (hour: number): string => {
-    // New Zealand lighting conditions - realistic and natural with subtle realism constraints
-    if (hour >= 6 && hour < 8) return 'NEW ZEALAND SUNRISE LIGHTING: Apply subtle and realistic New Zealand sunrise lighting with gentle warm tones. The sun is low on the horizon creating moderate shadows. The sky shows soft oranges and pinks typical of New Zealand mornings. Keep lighting natural and understated - avoid oversaturation or dramatic effects. Surfaces have warm but realistic illumination and the spa water reflects the morning light naturally without excessive brightness'
+    // New Zealand lighting conditions - realistic and natural with subtle realism constraints (7am-10pm only)
+    if (hour >= 7 && hour < 8) return 'NEW ZEALAND SUNRISE LIGHTING: Apply subtle and realistic New Zealand sunrise lighting with gentle warm tones. The sun is low on the horizon creating moderate shadows. The sky shows soft oranges and pinks typical of New Zealand mornings. Keep lighting natural and understated - avoid oversaturation or dramatic effects. Surfaces have warm but realistic illumination and the spa water reflects the morning light naturally without excessive brightness'
     
     if (hour >= 8 && hour < 11) return 'NEW ZEALAND MORNING LIGHTING: Apply clear, natural New Zealand morning sunlight with realistic intensity. Create well-defined but natural shadows and a blue sky characteristic of New Zealand\'s clear air. The lighting should feel fresh and natural with good visibility - avoid oversaturation or excessive brightness. Keep colors natural and realistic, typical of New Zealand mornings'
     
@@ -62,11 +61,10 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     
     if (hour >= 18 && hour < 20) return 'NEW ZEALAND GOLDEN HOUR: Apply New Zealand\'s natural golden hour lighting with subtle warm tones. Create gentle side-lighting and longer shadows with soft reflections on surfaces. Keep the golden effect natural and understated - avoid oversaturation or excessive drama. The sky shows natural golden-orange hues and the spa water reflects the evening light naturally, capturing New Zealand\'s evening atmosphere with realistic subtlety'
     
-    if (hour >= 20 && hour < 22) return 'NEW ZEALAND SUNSET LIGHTING: Apply realistic New Zealand sunset lighting with natural oranges, soft pinks, and gentle purples in the sky. Keep colors natural and avoid oversaturation or dramatic effects. The setting sun casts warm tones across surfaces with natural shadows and gentle reflections on the spa water. Create a peaceful, natural sunset atmosphere typical of New Zealand evenings with realistic lighting intensity'
+    if (hour >= 20 && hour <= 22) return 'NEW ZEALAND SUNSET LIGHTING: Apply realistic New Zealand sunset lighting with natural oranges, soft pinks, and gentle purples in the sky. Keep colors natural and avoid oversaturation or dramatic effects. The setting sun casts warm tones across surfaces with natural shadows and gentle reflections on the spa water. Create a peaceful, natural sunset atmosphere typical of New Zealand evenings with realistic lighting intensity'
     
-    if (hour >= 22 || hour < 6) return 'NEW ZEALAND NIGHT LIGHTING: Apply realistic New Zealand nighttime conditions with a naturally dark sky (deep blue or black with visible stars where appropriate). No daylight should be visible. Add natural outdoor lighting - warm deck lights, subtle underwater spa lighting, landscape path lights, and house/patio lighting typical of New Zealand homes. Keep lighting realistic and avoid excessive brightness or drama. Create natural contrast between dark areas and lit spaces with the spa water showing gentle underwater illumination'
-    
-    return 'NEW ZEALAND DAWN LIGHTING: Apply realistic pre-sunrise New Zealand dawn lighting with soft blue tones and gentle shadows. Keep effects natural and subtle - avoid oversaturation or dramatic lighting. Create the quiet, natural atmosphere of New Zealand\'s early morning with realistic lighting intensity'
+    // Default fallback for any edge cases within the 7-22 range
+    return 'NEW ZEALAND DAYLIGHT: Apply natural New Zealand daylight with realistic intensity and natural color temperature. Keep lighting effects subtle and natural - avoid oversaturation or dramatic effects'
   }
 
   useEffect(() => {
@@ -238,8 +236,8 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
             </div>
             <input
               type="range"
-              min="0"
-              max="23"
+              min="7"
+              max="22"
               value={timeOfDay}
               onChange={(e) => setTimeOfDay(parseInt(e.target.value))}
               className="time-slider"
