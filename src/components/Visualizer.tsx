@@ -37,8 +37,9 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     if (hour >= 8 && hour < 11) return 'morning'
     if (hour >= 11 && hour < 15) return 'midday'
     if (hour >= 15 && hour < 18) return 'afternoon'
-    if (hour >= 18 && hour < 20) return 'golden hour'
-    if (hour >= 20 && hour <= 22) return 'sunset/dusk'
+    if (hour >= 18 && hour < 19) return 'golden hour'
+    if (hour >= 19 && hour < 21) return 'sunset'
+    if (hour >= 21 && hour <= 22) return 'night'
     return 'daylight'
   }
 
@@ -59,9 +60,11 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     
     if (hour >= 15 && hour < 18) return 'NEW ZEALAND AFTERNOON LIGHTING: Apply warm, natural New Zealand afternoon sunlight with moderately long shadows. Gentle warm tones appear on surfaces with comfortable natural lighting. Keep effects subtle and realistic - avoid oversaturation or dramatic golden effects. The lighting should feel relaxed and natural, typical of New Zealand\'s afternoon ambiance without being overly stylized'
     
-    if (hour >= 18 && hour < 20) return 'NEW ZEALAND GOLDEN HOUR: Apply New Zealand\'s natural golden hour lighting with subtle warm tones. Create gentle side-lighting and longer shadows with soft reflections on surfaces. Keep the golden effect natural and understated - avoid oversaturation or excessive drama. The sky shows natural golden-orange hues and the spa water reflects the evening light naturally, capturing New Zealand\'s evening atmosphere with realistic subtlety'
+    if (hour >= 18 && hour < 19) return 'NEW ZEALAND GOLDEN HOUR: Apply New Zealand\'s natural golden hour lighting with subtle warm tones. Create gentle side-lighting and longer shadows with soft reflections on surfaces. Keep the golden effect natural and understated - avoid oversaturation or excessive drama. The sky shows natural golden-orange hues and the spa water reflects the evening light naturally, capturing New Zealand\'s evening atmosphere with realistic subtlety'
     
-    if (hour >= 20 && hour <= 22) return 'NEW ZEALAND SUNSET LIGHTING: Apply realistic New Zealand sunset lighting with natural oranges, soft pinks, and gentle purples in the sky. Keep colors natural and avoid oversaturation or dramatic effects. The setting sun casts warm tones across surfaces with natural shadows and gentle reflections on the spa water. Create a peaceful, natural sunset atmosphere typical of New Zealand evenings with realistic lighting intensity'
+    if (hour >= 19 && hour < 21) return 'NEW ZEALAND SUNSET LIGHTING: Apply realistic New Zealand sunset lighting with natural oranges, soft pinks, and gentle purples in the sky. Keep colors natural and avoid oversaturation or dramatic effects. The setting sun casts warm tones across surfaces with natural shadows and gentle reflections on the spa water. Create a peaceful, natural sunset atmosphere typical of New Zealand evenings with realistic lighting intensity'
+    
+    if (hour >= 21 && hour <= 22) return 'NEW ZEALAND NIGHT LIGHTING: Apply realistic New Zealand nighttime conditions with a naturally dark sky (deep blue or black with visible stars where appropriate). No daylight should be visible. Add natural outdoor lighting - warm deck lights, subtle underwater spa lighting, landscape path lights, and house/patio lighting typical of New Zealand homes. Keep lighting realistic and avoid excessive brightness or drama. Create natural contrast between dark areas and lit spaces with the spa water showing gentle underwater illumination'
     
     // Default fallback for any edge cases within the 7-22 range
     return 'NEW ZEALAND DAYLIGHT: Apply natural New Zealand daylight with realistic intensity and natural color temperature. Keep lighting effects subtle and natural - avoid oversaturation or dramatic effects'
