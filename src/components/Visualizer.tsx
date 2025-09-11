@@ -316,16 +316,6 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
             <p>Size: {selectedSpa.dimensions.length}m × {selectedSpa.dimensions.width}m</p>
             <p>Price: ${selectedSpa.price.toLocaleString()}</p>
             {selectedSpa.sku && <p>SKU: {selectedSpa.sku}</p>}
-            {imageDimensions && (
-              <div className="image-quality-info">
-                <p className="image-dimensions">
-                  📐 Resolution: {imageDimensions.width} × {imageDimensions.height}px
-                </p>
-                <p className="quality-note">
-                  💎 Displayed at native resolution for optimal quality
-                </p>
-              </div>
-            )}
             {selectedSpa.productUrl && (
               <div className="product-link">
                 <a 
