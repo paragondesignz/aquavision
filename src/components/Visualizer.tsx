@@ -19,7 +19,6 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
   const [resultImage, setResultImage] = useState<string | null>(null)
   const [timeOfDay, setTimeOfDay] = useState(12) // 24-hour format, 12 = noon, range 7-22
   const [tipIndex, setTipIndex] = useState(0)
-  const [imageDimensions, setImageDimensions] = useState<{width: number, height: number} | null>(null)
 
   const tips = [
     "If the positioning looks weird, try generating another placement",
@@ -170,20 +169,6 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     }
   }
 
-  const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = event.currentTarget
-    setImageDimensions({
-      width: img.naturalWidth,
-      height: img.naturalHeight
-    })
-    
-    // Set CSS custom properties for responsive sizing
-    const container = img.closest('.visualization-container') as HTMLElement
-    if (container) {
-      container.style.setProperty('--image-natural-width', `${img.naturalWidth}px`)
-      container.style.setProperty('--image-natural-height', `${img.naturalHeight}px`)
-    }
-  }
 
   const handleDownload = () => {
     if (!resultImage) return
@@ -211,14 +196,12 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
             src={resultImage} 
             alt="Spa visualization" 
             className="result-image"
-            onLoad={handleImageLoad}
           />
         ) : (
           <img 
             src={uploadedImage.url} 
             alt="Original" 
             className="result-image"
-            onLoad={handleImageLoad}
           />
         )}
         
