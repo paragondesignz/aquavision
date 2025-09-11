@@ -21,9 +21,21 @@ function HomePage() {
           <h3>Upload Your Photo</h3>
           <p>Take or upload a photo of your outdoor space</p>
         </div>
+        <div className="feature-arrow">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </div>
         <div className="feature">
           <h3>Choose Your Spa</h3>
           <p>Select from our range of spa pools</p>
+        </div>
+        <div className="feature-arrow">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
         </div>
         <div className="feature">
           <h3>AI Placement</h3>

@@ -67,19 +67,33 @@ body {
 }
 
 .features {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  max-width: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 1200px;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .feature {
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
   padding: 2rem;
   background: #1e2139;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   border: 1px solid #2d3748;
+}
+
+.feature-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(255, 178, 107);
+  opacity: 0.8;
+  flex-shrink: 0;
 }
 
 .feature h3 {
@@ -844,6 +858,22 @@ body {
   
   .hero p {
     font-size: 1rem;
+  }
+  
+  /* Stack features vertically on mobile and hide arrows */
+  .features {
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+  }
+  
+  .feature-arrow {
+    display: none;
+  }
+  
+  .feature {
+    max-width: 100%;
+    width: 100%;
   }
   
   .visualizer {
