@@ -416,7 +416,7 @@ body {
   overflow: hidden;
   border: 2px solid #2d3748;
   flex: 1;
-  width: 0; /* Allows flex item to shrink below content size if needed */
+  min-width: 0; /* Allows flex item to shrink below content size if needed */
   /* Add max constraints to prevent excessive sizing */
   max-width: calc(100vw - 450px); /* Account for controls width + margins */
   /* Remove max-height constraint to prevent cropping */
@@ -454,15 +454,18 @@ body {
 @media (max-width: 768px) {
   .visualization-container {
     max-width: 100%;
+    width: 100%;
+    min-width: 100%;
     margin: 0 auto;
     /* Remove max-height to prevent cropping on mobile */
   }
   
   .result-image {
-    /* On mobile, allow flexible sizing while maintaining aspect ratio */
+    /* On mobile, ensure full width while maintaining aspect ratio */
+    width: 100%;
     max-width: 100%;
-    width: auto;
     height: auto;
+    display: block;
     /* Remove height constraints to prevent cropping */
   }
   
