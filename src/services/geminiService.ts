@@ -242,6 +242,12 @@ async function generateImageWithSpa(
   
   const prompt = customPrompt || `Place this ${spaModel.name} spa pool in the most optimal space in the scene. Ensure it is optimally sized, rotated and oriented.
     
+    IMAGE QUALITY REQUIREMENTS:
+    - Generate a high-resolution image with crisp, clear details
+    - Ensure the output resolution is at least 1024x1024 pixels for optimal quality
+    - Maintain sharp edges and clear textures throughout the image
+    - Avoid pixelation or blurriness in the final result
+    
     CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
     
     ALIGNMENT AND ORIENTATION RULES:
@@ -272,13 +278,14 @@ async function generateImageWithSpa(
     ${lightingPrompt}
     
     LIGHTING REQUIREMENTS:
-    - The lighting change should be clear and noticeable but realistic
-    - Apply natural lighting appropriate for the time of day
-    - Adjust sky colors, shadow lengths, surface reflections, and overall atmosphere naturally
-    - The spa water should reflect the lighting conditions realistically
-    - Surfaces in the scene should show natural lighting effects for the time of day
-    - Make the time of day change clearly visible while maintaining realism
-    - Apply lighting that is geographically accurate for New Zealand conditions
+    - The lighting change should be subtle and realistic - avoid oversaturation or dramatic effects
+    - Apply natural lighting appropriate for the time of day with realistic intensity
+    - Adjust sky colors, shadow lengths, surface reflections, and overall atmosphere naturally and subtly
+    - The spa water should reflect the lighting conditions realistically without excessive glare or brightness
+    - Surfaces in the scene should show natural lighting effects for the time of day - keep effects understated
+    - Make the time of day change visible while maintaining natural realism - avoid overstyling
+    - Apply lighting that is geographically accurate for New Zealand conditions with natural subtlety
+    - CRITICAL: Keep all lighting effects natural and understated - avoid oversaturation, excessive drama, or artificial-looking enhancements
     
     POSITIONING ABSOLUTE LOCK:
     - MAINTAIN THE EXACT SAME SPA POSITION, SIZE, AND PLACEMENT - only change lighting/atmosphere
@@ -499,13 +506,14 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
   ${lightingPrompt}
   
   LIGHTING REQUIREMENTS:
-  - The lighting change should be clear and noticeable but realistic
-  - Apply natural lighting appropriate for the time of day
-  - Adjust sky colors, shadow lengths, surface reflections, and overall atmosphere naturally
-  - The spa water should reflect the lighting conditions realistically
-  - Surfaces in the scene should show natural lighting effects for the time of day
-  - Make the time of day change clearly visible while maintaining realism
-  - Apply lighting that is geographically accurate for New Zealand conditions
+  - The lighting change should be subtle and realistic - avoid oversaturation or dramatic effects
+  - Apply natural lighting appropriate for the time of day with realistic intensity
+  - Adjust sky colors, shadow lengths, surface reflections, and overall atmosphere naturally and subtly
+  - The spa water should reflect the lighting conditions realistically without excessive glare or brightness
+  - Surfaces in the scene should show natural lighting effects for the time of day - keep effects understated
+  - Make the time of day change visible while maintaining natural realism - avoid overstyling
+  - Apply lighting that is geographically accurate for New Zealand conditions with natural subtlety
+  - CRITICAL: Keep all lighting effects natural and understated - avoid oversaturation, excessive drama, or artificial-looking enhancements
   
   POSITIONING ABSOLUTE LOCK:
   - MAINTAIN THE EXACT SAME SPA POSITION, SIZE, AND PLACEMENT - only change lighting/atmosphere

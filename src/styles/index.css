@@ -190,6 +190,32 @@ body {
   background: rgb(255, 168, 87);
 }
 
+.upload-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.camera-button {
+  background: #10b981;
+  color: white;
+}
+
+.camera-button:hover {
+  background: #059669;
+}
+
+.file-button {
+  background: rgb(255, 178, 107);
+  color: #1a1a2e;
+}
+
+.file-button:hover {
+  background: rgb(255, 168, 87);
+}
+
 .upload-text {
   color: #e2e8f0;
   margin-bottom: 1rem;
@@ -392,6 +418,9 @@ body {
   border: 2px solid #2d3748;
   flex: 1;
   width: 0; /* Allows flex item to shrink below content size if needed */
+  /* Add max constraints to prevent excessive sizing */
+  max-width: calc(100vw - 450px); /* Account for controls width + margins */
+  max-height: 80vh;
 }
 
 .controls {
@@ -400,9 +429,47 @@ body {
 }
 
 .result-image {
-  width: 100%;
+  /* Use max-width instead of width to prevent upscaling */
+  max-width: 100%;
+  width: auto;
   height: auto;
   display: block;
+  /* Ensure crisp rendering */
+  image-rendering: crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  /* Center the image in its container */
+  margin: 0 auto;
+  /* Respect container constraints while preserving quality */
+  object-fit: contain;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .visualization-container {
+    max-width: 100%;
+    max-height: 70vh; /* Increased for better mobile viewing */
+    margin: 0 auto;
+  }
+  
+  .result-image {
+    /* On mobile, allow more flexible sizing but still avoid upscaling */
+    max-width: min(100%, var(--image-natural-width, 1024px));
+    max-height: 70vh;
+  }
+  
+  /* Improve mobile page layout */
+  .visualizer-page {
+    padding: 0.5rem;
+  }
+  
+  .page-header {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
 }
 
 .processing-overlay {
@@ -620,6 +687,26 @@ body {
   margin-bottom: 0.25rem;
 }
 
+.image-quality-info {
+  margin: 0.75rem 0;
+  padding: 0.5rem;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 0.375rem;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.image-dimensions {
+  color: #60a5fa !important;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+.quality-note {
+  color: #34d399 !important;
+  font-size: 0.8rem !important;
+  font-style: italic;
+}
+
 .product-link {
   margin-top: 1rem;
 }
@@ -750,21 +837,99 @@ body {
     font-size: 2rem;
   }
   
+  .hero p {
+    font-size: 1rem;
+  }
+  
   .visualizer {
     flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
   }
   
   .controls {
     width: 100%;
+    order: 2; /* Move controls after visualization on mobile */
+  }
+  
+  .visualization-container {
+    order: 1; /* Ensure visualization is first on mobile */
   }
   
   .spa-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
   .filters {
     flex-direction: column;
     gap: 1rem;
+  }
+  
+  /* Make buttons more touch-friendly */
+  .upload-button {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    min-height: 48px; /* iOS accessibility guideline */
+  }
+  
+  .upload-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  
+  .upload-buttons .upload-button {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  /* Improve quick command buttons */
+  .quick-commands {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .quick-commands button {
+    padding: 0.875rem;
+    font-size: 0.95rem;
+    min-height: 48px;
+  }
+  
+  /* Make other buttons more touch-friendly */
+  .regenerate-button,
+  .time-apply-button,
+  .download-button {
+    min-height: 48px;
+    padding: 0.875rem 1.5rem;
+  }
+  
+  /* Improve image upload area */
+  .upload-area {
+    padding: 2rem 1rem;
+    margin: 1rem 0;
+  }
+  
+  .upload-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  /* Better spacing for spa selector */
+  .spa-card {
+    padding: 1.5rem;
+  }
+  
+  /* Improve step indicators */
+  .steps-indicator {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .step {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
   }
   
   .selection-panel {

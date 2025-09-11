@@ -11,6 +11,7 @@ function ImageUpload({ onImageUpload }: ImageUploadProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const cameraInputRef = useRef<HTMLInputElement>(null)
 
   const handleFile = async (file: File) => {
     setError(null)
@@ -82,6 +83,10 @@ function ImageUpload({ onImageUpload }: ImageUploadProps) {
     inputRef.current?.click()
   }
 
+  const handleCameraClick = () => {
+    cameraInputRef.current?.click()
+  }
+
   return (
     <div className="image-upload">
       <div 
@@ -96,6 +101,16 @@ function ImageUpload({ onImageUpload }: ImageUploadProps) {
           type="file"
           id="file-upload"
           accept="image/jpeg,image/png,image/webp,image/heic"
+          onChange={handleChange}
+          style={{ display: 'none' }}
+        />
+        
+        <input
+          ref={cameraInputRef}
+          type="file"
+          id="camera-capture"
+          accept="image/*"
+          capture="environment"
           onChange={handleChange}
           style={{ display: 'none' }}
         />
@@ -124,12 +139,20 @@ function ImageUpload({ onImageUpload }: ImageUploadProps) {
                 <p className="upload-text">
                   Drag and drop your image here, or
                 </p>
-                <button 
-                  className="upload-button"
-                  onClick={handleButtonClick}
-                >
-                  Browse Files
-                </button>
+                <div className="upload-buttons">
+                  <button 
+                    className="upload-button camera-button"
+                    onClick={handleCameraClick}
+                  >
+                    📱 Take Photo
+                  </button>
+                  <button 
+                    className="upload-button file-button"
+                    onClick={handleButtonClick}
+                  >
+                    📁 Browse Files
+                  </button>
+                </div>
                 <p className="upload-info">
                   Supports JPEG, PNG, WebP, HEIC (max 20MB)
                 </p>

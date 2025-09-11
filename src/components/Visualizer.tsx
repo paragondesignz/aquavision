@@ -19,6 +19,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
   const [resultImage, setResultImage] = useState<string | null>(null)
   const [timeOfDay, setTimeOfDay] = useState(12) // 24-hour format, 12 = noon
   const [tipIndex, setTipIndex] = useState(0)
+  const [imageDimensions, setImageDimensions] = useState<{width: number, height: number} | null>(null)
 
   const tips = [
     "If the positioning looks weird, try generating another placement",
@@ -50,22 +51,22 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
   }
 
   const getLightingPrompt = (hour: number): string => {
-    // New Zealand lighting conditions - realistic and natural
-    if (hour >= 6 && hour < 8) return 'NEW ZEALAND SUNRISE LIGHTING: Apply realistic New Zealand sunrise lighting with natural warm golden tones. The sun is low on the horizon creating moderate length shadows. The sky shows gentle oranges and soft pinks typical of New Zealand mornings. Surfaces have warm but natural illumination and the spa water reflects the morning light realistically'
+    // New Zealand lighting conditions - realistic and natural with subtle realism constraints
+    if (hour >= 6 && hour < 8) return 'NEW ZEALAND SUNRISE LIGHTING: Apply subtle and realistic New Zealand sunrise lighting with gentle warm tones. The sun is low on the horizon creating moderate shadows. The sky shows soft oranges and pinks typical of New Zealand mornings. Keep lighting natural and understated - avoid oversaturation or dramatic effects. Surfaces have warm but realistic illumination and the spa water reflects the morning light naturally without excessive brightness'
     
-    if (hour >= 8 && hour < 11) return 'NEW ZEALAND MORNING LIGHTING: Apply clear, natural New Zealand morning sunlight. Create well-defined shadows and a bright blue sky characteristic of New Zealand\'s clear air. The lighting should feel fresh and bright with good visibility and natural colors typical of New Zealand mornings'
+    if (hour >= 8 && hour < 11) return 'NEW ZEALAND MORNING LIGHTING: Apply clear, natural New Zealand morning sunlight with realistic intensity. Create well-defined but natural shadows and a blue sky characteristic of New Zealand\'s clear air. The lighting should feel fresh and natural with good visibility - avoid oversaturation or excessive brightness. Keep colors natural and realistic, typical of New Zealand mornings'
     
-    if (hour >= 11 && hour < 15) return 'NEW ZEALAND MIDDAY LIGHTING: Apply strong New Zealand midday sun from overhead. Create short shadows directly under objects with bright, clear illumination typical of New Zealand\'s UV-rich environment. The sky should be deep blue and colors should appear vibrant and well-lit. The spa water should reflect the bright overhead light naturally'
+    if (hour >= 11 && hour < 15) return 'NEW ZEALAND MIDDAY LIGHTING: Apply natural New Zealand midday sun from overhead with realistic intensity. Create short shadows directly under objects with clear but natural illumination. Avoid oversaturation - keep lighting realistic and natural. The sky should be blue and colors should appear natural and well-lit without being overly vibrant. The spa water should reflect the overhead light naturally without excessive glare'
     
-    if (hour >= 15 && hour < 18) return 'NEW ZEALAND AFTERNOON LIGHTING: Apply warm, natural New Zealand afternoon sunlight with moderately long shadows. Golden-warm tones appear on surfaces with comfortable bright lighting and blue sky with possible afternoon clouds. The lighting should feel relaxed and pleasant, typical of New Zealand\'s afternoon ambiance'
+    if (hour >= 15 && hour < 18) return 'NEW ZEALAND AFTERNOON LIGHTING: Apply warm, natural New Zealand afternoon sunlight with moderately long shadows. Gentle warm tones appear on surfaces with comfortable natural lighting. Keep effects subtle and realistic - avoid oversaturation or dramatic golden effects. The lighting should feel relaxed and natural, typical of New Zealand\'s afternoon ambiance without being overly stylized'
     
-    if (hour >= 18 && hour < 20) return 'NEW ZEALAND GOLDEN HOUR: Apply New Zealand\'s natural golden hour lighting with warm, soft golden tones. Create gentle side-lighting and longer shadows with golden reflections on surfaces. The sky shows natural golden-orange hues and the spa water reflects the evening light beautifully, capturing New Zealand\'s natural evening atmosphere'
+    if (hour >= 18 && hour < 20) return 'NEW ZEALAND GOLDEN HOUR: Apply New Zealand\'s natural golden hour lighting with subtle warm tones. Create gentle side-lighting and longer shadows with soft reflections on surfaces. Keep the golden effect natural and understated - avoid oversaturation or excessive drama. The sky shows natural golden-orange hues and the spa water reflects the evening light naturally, capturing New Zealand\'s evening atmosphere with realistic subtlety'
     
-    if (hour >= 20 && hour < 22) return 'NEW ZEALAND SUNSET LIGHTING: Apply realistic New Zealand sunset lighting with natural oranges, soft pinks, and gentle purples in the sky. The setting sun casts warm orange tones across surfaces with natural shadows and gentle reflections on the spa water. Create a peaceful, natural sunset atmosphere typical of New Zealand evenings'
+    if (hour >= 20 && hour < 22) return 'NEW ZEALAND SUNSET LIGHTING: Apply realistic New Zealand sunset lighting with natural oranges, soft pinks, and gentle purples in the sky. Keep colors natural and avoid oversaturation or dramatic effects. The setting sun casts warm tones across surfaces with natural shadows and gentle reflections on the spa water. Create a peaceful, natural sunset atmosphere typical of New Zealand evenings with realistic lighting intensity'
     
-    if (hour >= 22 || hour < 6) return 'NEW ZEALAND NIGHT LIGHTING: Apply realistic New Zealand nighttime conditions with a properly dark sky (deep blue or black with visible stars where appropriate). No daylight should be visible. Add natural outdoor lighting - warm deck lights, subtle underwater spa lighting, landscape path lights, and house/patio lighting typical of New Zealand homes. Create natural contrast between dark areas and lit spaces with the spa water showing gentle underwater illumination'
+    if (hour >= 22 || hour < 6) return 'NEW ZEALAND NIGHT LIGHTING: Apply realistic New Zealand nighttime conditions with a naturally dark sky (deep blue or black with visible stars where appropriate). No daylight should be visible. Add natural outdoor lighting - warm deck lights, subtle underwater spa lighting, landscape path lights, and house/patio lighting typical of New Zealand homes. Keep lighting realistic and avoid excessive brightness or drama. Create natural contrast between dark areas and lit spaces with the spa water showing gentle underwater illumination'
     
-    return 'NEW ZEALAND DAWN LIGHTING: Apply realistic pre-sunrise New Zealand dawn lighting with soft blue tones, gentle shadows, and the quiet, natural atmosphere of New Zealand\'s early morning'
+    return 'NEW ZEALAND DAWN LIGHTING: Apply realistic pre-sunrise New Zealand dawn lighting with soft blue tones and gentle shadows. Keep effects natural and subtle - avoid oversaturation or dramatic lighting. Create the quiet, natural atmosphere of New Zealand\'s early morning with realistic lighting intensity'
   }
 
   useEffect(() => {
@@ -168,6 +169,21 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     }
   }
 
+  const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = event.currentTarget
+    setImageDimensions({
+      width: img.naturalWidth,
+      height: img.naturalHeight
+    })
+    
+    // Set CSS custom properties for responsive sizing
+    const container = img.closest('.visualization-container') as HTMLElement
+    if (container) {
+      container.style.setProperty('--image-natural-width', `${img.naturalWidth}px`)
+      container.style.setProperty('--image-natural-height', `${img.naturalHeight}px`)
+    }
+  }
+
   const handleDownload = () => {
     if (!resultImage) return
     
@@ -194,12 +210,22 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
             src={resultImage} 
             alt="Spa visualization" 
             className="result-image"
+            onLoad={handleImageLoad}
+            style={{
+              maxWidth: imageDimensions ? `${imageDimensions.width}px` : 'none',
+              maxHeight: imageDimensions ? `${imageDimensions.height}px` : 'none',
+            }}
           />
         ) : (
           <img 
             src={uploadedImage.url} 
             alt="Original" 
             className="result-image"
+            onLoad={handleImageLoad}
+            style={{
+              maxWidth: uploadedImage.width ? `${uploadedImage.width}px` : 'none',
+              maxHeight: uploadedImage.height ? `${uploadedImage.height}px` : 'none',
+            }}
           />
         )}
         
@@ -297,6 +323,16 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
             <p>Size: {selectedSpa.dimensions.length}m × {selectedSpa.dimensions.width}m</p>
             <p>Price: ${selectedSpa.price.toLocaleString()}</p>
             {selectedSpa.sku && <p>SKU: {selectedSpa.sku}</p>}
+            {imageDimensions && (
+              <div className="image-quality-info">
+                <p className="image-dimensions">
+                  📐 Resolution: {imageDimensions.width} × {imageDimensions.height}px
+                </p>
+                <p className="quality-note">
+                  💎 Displayed at native resolution for optimal quality
+                </p>
+              </div>
+            )}
             {selectedSpa.productUrl && (
               <div className="product-link">
                 <a 
