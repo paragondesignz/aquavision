@@ -98,7 +98,7 @@ CRITICAL CONVERSATIONAL EDITING INSTRUCTIONS:
 LOCATION CONTEXT: This scene is set in New Zealand (Southern Hemisphere, Oceania). Apply lighting that is accurate for New Zealand's geographic location, climate, and lighting conditions.`
 
   const config = {
-    responseModalities: ['IMAGE', 'TEXT'] as const,
+    responseModalities: ['IMAGE', 'TEXT'] as string[],
   }
   
   const model = 'gemini-2.5-flash-image-preview'
@@ -290,7 +290,7 @@ async function generateImageWithSpa(
     ` : ''}`
 
   const config = {
-    responseModalities: ['IMAGE', 'TEXT'] as const,
+    responseModalities: ['IMAGE', 'TEXT'] as string[],
   }
   
   const model = 'gemini-2.5-flash-image-preview'

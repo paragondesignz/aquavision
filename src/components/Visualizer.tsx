@@ -73,7 +73,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
   }, [])
 
   useEffect(() => {
-    let tipInterval: NodeJS.Timeout
+    let tipInterval: number
     
     if (processing) {
       // Start tip cycling when processing begins
@@ -117,7 +117,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
         'change lighting only - maintain current position',
         position,
         getLightingPrompt(timeOfDay),
-        resultImage // Pass current result image for conversational editing
+        resultImage || undefined // Pass current result image for conversational editing
       )
       // Keep the same position since we're only changing lighting
       setResultImage(result.imageUrl)
