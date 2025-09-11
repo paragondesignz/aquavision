@@ -95,6 +95,15 @@ CRITICAL CONVERSATIONAL EDITING INSTRUCTIONS:
 - Maintain all object positions, colors, and arrangements exactly as they are
 - The goal is to show the same scene with different lighting conditions
 
+ABSOLUTE SPACE PRESERVATION RULES:
+- NEVER alter, modify, or change the background space/environment in any way
+- NEVER add, remove, or modify any architectural elements (decks, patios, railings, walls, structures)
+- NEVER change the landscaping, grass, plants, trees, or garden features
+- NEVER alter the ground surfaces, pathways, or hardscaping
+- NEVER modify furniture, outdoor equipment, or existing objects in the space
+- The ONLY things that can change are: lighting, shadows, sky color, and atmospheric effects
+- The space must remain 100% identical except for lighting conditions
+
 LOCATION CONTEXT: This scene is set in New Zealand (Southern Hemisphere, Oceania). Apply lighting that is accurate for New Zealand's geographic location, climate, and lighting conditions.`
 
   const config = {
@@ -247,6 +256,15 @@ async function generateImageWithSpa(
     - Ensure the output resolution is at least 1024x1024 pixels for optimal quality
     - Maintain sharp edges and clear textures throughout the image
     - Avoid pixelation or blurriness in the final result
+    
+    CRITICAL SPACE PRESERVATION:
+    - NEVER alter, modify, or change the background space/environment in any way
+    - NEVER add, remove, or modify any architectural elements (decks, patios, railings, walls, structures) 
+    - NEVER change the landscaping, grass, plants, trees, or garden features
+    - NEVER alter the ground surfaces, pathways, or hardscaping
+    - NEVER modify existing furniture, outdoor equipment, or objects in the space
+    - ONLY ADD the spa pool to the existing space - everything else must remain identical
+    - The background space is perfect as-is and must not be touched or improved
     
     CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
     
@@ -428,11 +446,20 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
     Keep everything else (including spa position) exactly as it currently appears.
     *** END POSITIONING LOCK ***
     
+    CRITICAL SPACE PRESERVATION FOR LIGHTING CHANGES:
+    - NEVER alter, modify, or change the background space/environment in any way
+    - NEVER add, remove, or modify any architectural elements (decks, patios, railings, walls, structures)
+    - NEVER change the landscaping, grass, plants, trees, or garden features  
+    - NEVER alter the ground surfaces, pathways, or hardscaping
+    - NEVER modify existing furniture, outdoor equipment, or objects in the space
+    - ONLY change lighting conditions - everything else must remain identical
+    - The background space is perfect as-is and must not be touched or improved
+    
     CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
     `
     
     prompt += `
-    IMPORTANT: This is purely a lighting adjustment - NO positioning changes allowed. Keep all spa aspects (position, size, rotation, color: ${spaModel.selectedColor || 'original'}, texture, materials, design) exactly as they currently appear in the image.
+    IMPORTANT: This is purely a lighting adjustment - NO positioning changes allowed and NO space modifications allowed. Keep all spa aspects (position, size, rotation, color: ${spaModel.selectedColor || 'original'}, texture, materials, design) exactly as they currently appear in the image. Keep ALL background elements exactly as they are.
     
     ALWAYS show the spa FILLED WITH CLEAR, CLEAN WATER that reflects the new lighting conditions naturally and shows gentle water ripples. Water should appear crystal clear and inviting, never empty or dry.
     
@@ -443,6 +470,15 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
   
   // Handle regular position adjustments
   let prompt = `Adjust the placement of the ${spaModel.name} spa pool in the scene. 
+  
+  CRITICAL SPACE PRESERVATION:
+  - NEVER alter, modify, or change the background space/environment in any way
+  - NEVER add, remove, or modify any architectural elements (decks, patios, railings, walls, structures)
+  - NEVER change the landscaping, grass, plants, trees, or garden features
+  - NEVER alter the ground surfaces, pathways, or hardscaping  
+  - NEVER modify existing furniture, outdoor equipment, or objects in the space
+  - ONLY reposition the spa pool within the existing space - everything else must remain identical
+  - The background space is perfect as-is and must not be touched or improved
   
   CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
   
