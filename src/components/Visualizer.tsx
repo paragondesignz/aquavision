@@ -182,42 +182,44 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
 
   return (
     <div className="visualizer">
-      <div className="visualization-container">
-        {processing && (
-          <div className="processing-overlay">
-            <div className="spinner"></div>
-            <p>Processing your image...</p>
-            <p className="processing-tip">💡 {tips[tipIndex]}</p>
-          </div>
-        )}
-        
-        {resultImage ? (
-          <img 
-            src={resultImage} 
-            alt="Spa visualization" 
-            className="result-image"
-          />
-        ) : (
-          <img 
-            src={uploadedImage.url} 
-            alt="Original" 
-            className="result-image"
-          />
-        )}
-        
-        {error && (
-          <div className="error-overlay">
-            <p>{error}</p>
-            <button onClick={processInitialPlacement}>Retry</button>
-          </div>
+      <div className="visualization-wrapper">
+        <div className="visualization-container">
+          {processing && (
+            <div className="processing-overlay">
+              <div className="spinner"></div>
+              <p>Processing your image...</p>
+              <p className="processing-tip">💡 {tips[tipIndex]}</p>
+            </div>
+          )}
+          
+          {resultImage ? (
+            <img 
+              src={resultImage} 
+              alt="Spa visualization" 
+              className="result-image"
+            />
+          ) : (
+            <img 
+              src={uploadedImage.url} 
+              alt="Original" 
+              className="result-image"
+            />
+          )}
+          
+          {error && (
+            <div className="error-overlay">
+              <p>{error}</p>
+              <button onClick={processInitialPlacement}>Retry</button>
+            </div>
+          )}
+        </div>
+
+        {resultImage && (
+          <p className="image-disclaimer">
+            Generated images may not be to scale and are not intended for planning purposes
+          </p>
         )}
       </div>
-
-      {resultImage && (
-        <p className="image-disclaimer">
-          Generated images may not be to scale and are not intended for planning purposes
-        </p>
-      )}
 
       <div className="controls">
         <div className="adjustment-panel">

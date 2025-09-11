@@ -444,17 +444,21 @@ body {
   align-items: flex-start;
 }
 
+.visualization-wrapper {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .visualization-container {
   position: relative;
   background: #1e2139;
   border-radius: 12px;
   overflow: hidden;
   border: 2px solid #2d3748;
-  flex: 1;
-  min-width: 0; /* Allows flex item to shrink below content size if needed */
-  /* Add max constraints to prevent excessive sizing */
-  max-width: calc(100vw - 450px); /* Account for controls width + margins */
-  /* Remove max-height constraint to prevent cropping */
+  width: 100%;
 }
 
 .controls {
@@ -487,6 +491,11 @@ body {
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
+  .visualization-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
   .visualization-container {
     max-width: 100%;
     width: 100%;
