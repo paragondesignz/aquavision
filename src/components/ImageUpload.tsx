@@ -1,0 +1,160 @@
+import { useState, useRef } from 'react'
+import { UploadedImage } from '../types'
+
+interface ImageUploadProps {
+  onImageUpload: (image: UploadedImage) => void
+}
+
+function ImageUpload({ onImageUpload }: ImageUploadProps) {
+  const [dragActive, setDragActive] = useState(false)
+  const [preview, setPreview] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleFile = async (file: File) => {
+    setError(null)
+    
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic']
+    if (!validTypes.includes(file.type)) {
+      setError('Please upload a JPEG, PNG, WebP, or HEIC image')
+      return
+    }
+
+    if (file.size > 20 * 1024 * 1024) {
+      setError('File size must be less than 20MB')
+      return
+    }
+
+    setLoading(true)
+    
+    const url = URL.createObjectURL(file)
+    const img = new Image()
+    
+    img.onload = () => {
+      const uploadedImage: UploadedImage = {
+        file,
+        url,
+        width: img.width,
+        height: img.height
+      }
+      setPreview(url)
+      setLoading(false)
+      onImageUpload(uploadedImage)
+    }
+    
+    img.onerror = () => {
+      setError('Failed to load image')
+      setLoading(false)
+    }
+    
+    img.src = url
+  }
+
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true)
+    } else if (e.type === 'dragleave') {
+      setDragActive(false)
+    }
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFile(e.dataTransfer.files[0])
+    }
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    if (e.target.files && e.target.files[0]) {
+      handleFile(e.target.files[0])
+    }
+  }
+
+  const handleButtonClick = () => {
+    inputRef.current?.click()
+  }
+
+  return (
+    <div className="image-upload">
+      <div 
+        className={`upload-area ${dragActive ? 'drag-active' : ''}`}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
+        <input
+          ref={inputRef}
+          type="file"
+          id="file-upload"
+          accept="image/jpeg,image/png,image/webp,image/heic"
+          onChange={handleChange}
+          style={{ display: 'none' }}
+        />
+        
+        {preview ? (
+          <div className="preview-container">
+            <img src={preview} alt="Uploaded preview" className="preview-image" />
+            <button 
+              className="change-image-button"
+              onClick={handleButtonClick}
+            >
+              Change Image
+            </button>
+          </div>
+        ) : (
+          <div className="upload-prompt">
+            {loading ? (
+              <div className="loading">Processing image...</div>
+            ) : (
+              <>
+                <svg className="upload-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="17 8 12 3 7 8" />
+                  <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <p className="upload-text">
+                  Drag and drop your image here, or
+                </p>
+                <button 
+                  className="upload-button"
+                  onClick={handleButtonClick}
+                >
+                  Browse Files
+                </button>
+                <p className="upload-info">
+                  Supports JPEG, PNG, WebP, HEIC (max 20MB)
+                </p>
+                
+                <div className="disclaimer">
+                  <h4>ℹ️ Important Notice</h4>
+                  <p>
+                    This app is for <strong>visualisation and entertainment purposes only</strong>. 
+                    It's not intended as a planning tool. The AI generator will sometimes give 
+                    'interesting' results, but you can click the 'Generate New Placement' button 
+                    to have another try. The positioning buttons will give you some loose control 
+                    over the position.
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+        
+        {error && (
+          <div className="error-message">{error}</div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default ImageUpload
