@@ -489,6 +489,14 @@ body {
   opacity: 0.8;
 }
 
+.mobile-save-tip {
+  display: none;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
   .visualization-wrapper {

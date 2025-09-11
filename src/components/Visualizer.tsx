@@ -170,13 +170,27 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
   }
 
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!resultImage) return
     
-    const link = document.createElement('a')
-    link.href = resultImage
-    link.download = `spa-visualization-${Date.now()}.jpg`
-    link.click()
+    // Check if we're on mobile - if so, just show instructions
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    
+    if (isMobile) {
+      alert('To save your image: Long-press the image above and select "Save to Photos" or "Download Image"')
+      return
+    }
+    
+    // Desktop download
+    try {
+      const link = document.createElement('a')
+      link.href = resultImage
+      link.download = `spa-visualization-${Date.now()}.jpg`
+      link.click()
+    } catch (error) {
+      console.error('Download failed:', error)
+      alert('Unable to download image. Please right-click the image and save it manually.')
+    }
   }
 
 
@@ -297,7 +311,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
               onClick={handleDownload}
               disabled={!resultImage}
             >
-              Download Image
+              Save Image
             </button>
           </div>
           
