@@ -528,6 +528,50 @@ body {
   font-style: italic;
 }
 
+.architect-style-section {
+  margin-top: 1rem;
+}
+
+.architect-style-button {
+  background: #6366f1;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.architect-style-button:hover:not(:disabled) {
+  background: #5855eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.architect-style-button.active {
+  background: #4f46e5;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.4);
+}
+
+.architect-style-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.architect-style-info {
+  color: #94a3b8;
+  font-size: 0.875rem;
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
 .quick-commands {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

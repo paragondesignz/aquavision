@@ -18,7 +18,8 @@ export async function processWithGemini(
   command?: string,
   currentPosition?: Position,
   lightingPrompt?: string,
-  currentResultImage?: string
+  currentResultImage?: string,
+  architectStyle?: boolean
 ): Promise<VisualizationResult> {
   
   if (!API_KEY) {
@@ -27,7 +28,7 @@ export async function processWithGemini(
 
   if (mode === 'initial') {
     // Use image generation for initial placement
-    const generatedImage = await generateImageWithSpa(uploadedImage, spaModel, undefined, lightingPrompt)
+    const generatedImage = await generateImageWithSpa(uploadedImage, spaModel, undefined, lightingPrompt, architectStyle)
     
     return {
       imageUrl: generatedImage,
@@ -63,7 +64,8 @@ export async function processWithGemini(
         uploadedImage, 
         spaModel, 
         commandToPrompt(command || '', spaModel, lightingPrompt),
-        lightingPrompt
+        lightingPrompt,
+        architectStyle
       )
       
       return {
@@ -234,7 +236,8 @@ async function generateImageWithSpa(
   uploadedImage: UploadedImage,
   spaModel: SpaModel,
   customPrompt?: string,
-  lightingPrompt?: string
+  lightingPrompt?: string,
+  architectStyle?: boolean
 ): Promise<string> {
   // Convert images to base64
   const imageBase64 = await fileToBase64(uploadedImage.file)
@@ -264,6 +267,45 @@ async function generateImageWithSpa(
     IMPORTANT: Only change the spa's position, size, and rotation. Keep all other visual aspects (color, texture, materials, design) exactly as they appear in the original spa image. ALWAYS show the spa filled with beautiful, clear water.
     
     Make it look like the spa naturally belongs in this space and was designed to complement the existing architecture while preserving its authentic appearance and showing it ready for use with clean water.
+    
+    ${architectStyle ? `
+    *** ARCHITECT DRAWING STYLE TRANSFORMATION ***
+    CRITICAL ARTISTIC RENDERING REQUIREMENTS:
+    Transform this entire scene into a professional architectural visualization with the following specific characteristics:
+    
+    DRAWING TECHNIQUE:
+    - Render in the style of a technical architectural drawing with artistic flair
+    - Use precise, clean technical pencil line work for all structural elements (buildings, decks, railings, spa edges)
+    - Apply delicate, light pencil shading for depth and dimension
+    - Create professional architectural perspective with accurate proportions
+    
+    WATERCOLOR TREATMENT:
+    - Add subtle watercolor washes over the pencil framework
+    - Use muted, sophisticated color palette (soft blues, greens, earth tones)
+    - Apply watercolor technique with natural bleeding and transparency effects
+    - Maintain architectural precision while adding artistic warmth
+    
+    LANDSCAPE ELEMENTS:
+    - Render vegetation with architectural botanical illustration style
+    - Show trees, plants, and grass with stylized but realistic representation
+    - Use watercolor techniques for foliage (natural color variations, soft edges)
+    - Apply proper shadow and light studies typical of architectural renderings
+    
+    TECHNICAL ACCURACY:
+    - Maintain precise architectural proportions and measurements
+    - Show the spa with technical accuracy but artistic presentation
+    - Include subtle construction details and material textures
+    - Demonstrate proper perspective and vanishing points
+    
+    ARTISTIC PRESENTATION:
+    - Create the refined aesthetic of high-end architectural visualization
+    - Balance technical precision with artistic beauty
+    - Use the sophisticated style found in luxury home design presentations
+    - Maintain professional architectural drawing standards with artistic enhancement
+    
+    The final result should look like a beautiful architectural rendering that could be presented to clients - combining technical accuracy with artistic appeal through pencil and watercolor techniques.
+    *** END ARCHITECT STYLE TRANSFORMATION ***
+    ` : ''}
     
     ${lightingPrompt ? `
     *** CRITICAL LIGHTING TRANSFORMATION ***

@@ -19,6 +19,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
   const [resultImage, setResultImage] = useState<string | null>(null)
   const [timeOfDay, setTimeOfDay] = useState(12) // 24-hour format, 12 = noon
   const [tipIndex, setTipIndex] = useState(0)
+  const [architectStyle, setArchitectStyle] = useState(false)
 
   const tips = [
     "If the positioning looks weird, try generating another placement",
@@ -27,7 +28,8 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     "Download your image to print or share with family and friends",
     "Try different times of day to see how lighting affects your MSpa's appearance",
     "The AI will size your MSpa realistically based on objects in your photo",
-    "Each generation is unique - experiment with different placements"
+    "Each generation is unique - experiment with different placements",
+    "Try the architect style for a technical drawing with watercolor rendering"
   ]
 
   const getTimeDescription = (hour: number): string => {
@@ -94,7 +96,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     setError(null)
     
     try {
-      const result = await processWithGemini(uploadedImage, selectedSpa, 'initial', undefined, undefined, getLightingPrompt(timeOfDay))
+      const result = await processWithGemini(uploadedImage, selectedSpa, 'initial', undefined, undefined, getLightingPrompt(timeOfDay), undefined, architectStyle)
       setPosition(result.position)
       setResultImage(result.imageUrl)
     } catch (err) {
@@ -117,7 +119,8 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
         'change lighting only - maintain current position',
         position,
         getLightingPrompt(timeOfDay),
-        resultImage || undefined // Pass current result image for conversational editing
+        resultImage || undefined, // Pass current result image for conversational editing
+        architectStyle
       )
       // Keep the same position since we're only changing lighting
       setResultImage(result.imageUrl)
@@ -140,7 +143,9 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
         'adjust',
         command,
         position,
-        getLightingPrompt(timeOfDay)
+        getLightingPrompt(timeOfDay),
+        undefined,
+        architectStyle
       )
       setPosition(result.position)
       setResultImage(result.imageUrl)
@@ -152,12 +157,42 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     }
   }
 
+  const handleArchitectStyleToggle = async () => {
+    const newArchitectStyle = !architectStyle
+    setArchitectStyle(newArchitectStyle)
+    
+    // If we have a result image, regenerate it with the new style
+    if (resultImage) {
+      setProcessing(true)
+      setError(null)
+      
+      try {
+        const result = await processWithGemini(
+          uploadedImage, 
+          selectedSpa, 
+          'adjust',
+          'change style only - maintain current position',
+          position,
+          getLightingPrompt(timeOfDay),
+          resultImage || undefined,
+          newArchitectStyle
+        )
+        setResultImage(result.imageUrl)
+      } catch (err) {
+        setError('Failed to change style. Please try again.')
+        console.error(err)
+      } finally {
+        setProcessing(false)
+      }
+    }
+  }
+
   const handleRegenerate = async () => {
     setProcessing(true)
     setError(null)
     
     try {
-      const result = await processWithGemini(uploadedImage, selectedSpa, 'initial', undefined, undefined, getLightingPrompt(timeOfDay))
+      const result = await processWithGemini(uploadedImage, selectedSpa, 'initial', undefined, undefined, getLightingPrompt(timeOfDay), undefined, architectStyle)
       setPosition(result.position)
       setResultImage(result.imageUrl)
     } catch (err) {
@@ -249,6 +284,22 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
               🎲 Generate New Placement
             </button>
             <p className="regenerate-info">Try a different AI placement for your spa</p>
+          </div>
+          
+          <div className="architect-style-section">
+            <button 
+              className={`architect-style-button ${architectStyle ? 'active' : ''}`}
+              onClick={handleArchitectStyleToggle}
+              disabled={processing}
+            >
+              {architectStyle ? '🏛️ Architect Style: ON' : '🏛️ Architect Style: OFF'}
+            </button>
+            <p className="architect-style-info">
+              {architectStyle 
+                ? 'Technical pencil drawing with watercolor styling' 
+                : 'Transform into architectural rendering'
+              }
+            </p>
           </div>
           
           <div className="quick-commands">
