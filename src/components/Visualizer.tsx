@@ -192,16 +192,11 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
         )}
         
         {resultImage ? (
-          <>
-            <img 
-              src={resultImage} 
-              alt="Spa visualization" 
-              className="result-image"
-            />
-            <p className="image-disclaimer">
-              Generated images may not be to scale and are not intended for planning purposes
-            </p>
-          </>
+          <img 
+            src={resultImage} 
+            alt="Spa visualization" 
+            className="result-image"
+          />
         ) : (
           <img 
             src={uploadedImage.url} 
@@ -218,6 +213,12 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
         )}
       </div>
 
+      {resultImage && (
+        <p className="image-disclaimer">
+          Generated images may not be to scale and are not intended for planning purposes
+        </p>
+      )}
+
       <div className="controls">
         <div className="adjustment-panel">
           <h3>Adjust Position</h3>
@@ -228,7 +229,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
               onClick={handleRegenerate}
               disabled={processing}
             >
-              🎲 Generate New Placement
+              Generate New Placement
             </button>
             <p className="regenerate-info">Try a different AI placement for your spa</p>
           </div>
@@ -238,25 +239,25 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
               onClick={() => handleQuickCommand('move left')}
               disabled={processing}
             >
-              ← Move Left
+              Move Left
             </button>
             <button 
               onClick={() => handleQuickCommand('move right')}
               disabled={processing}
             >
-              Move Right →
+              Move Right
             </button>
             <button 
               onClick={() => handleQuickCommand('move up')}
               disabled={processing}
             >
-              ↑ Move Up
+              Move Back
             </button>
             <button 
               onClick={() => handleQuickCommand('move down')}
               disabled={processing}
             >
-              ↓ Move Down
+              Move Forward
             </button>
           </div>
         </div>
@@ -281,7 +282,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
               onClick={handleTimeChange}
               disabled={processing}
             >
-              🌅 Apply Lighting
+              Apply Lighting
             </button>
           </div>
         </div>
@@ -294,7 +295,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
               onClick={handleDownload}
               disabled={!resultImage}
             >
-              📥 Download Image
+              Download Image
             </button>
           </div>
           
@@ -303,7 +304,6 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
             <p>Capacity: {selectedSpa.capacity} people</p>
             <p>Size: {selectedSpa.dimensions.length}m × {selectedSpa.dimensions.width}m</p>
             <p>Price: ${selectedSpa.price.toLocaleString()}</p>
-            {selectedSpa.sku && <p>SKU: {selectedSpa.sku}</p>}
             {selectedSpa.productUrl && (
               <div className="product-link">
                 <a 
@@ -312,7 +312,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
                   rel="noopener noreferrer"
                   className="view-product-button"
                 >
-                  🔗 View Product Details
+                  View Product Details
                 </a>
               </div>
             )}

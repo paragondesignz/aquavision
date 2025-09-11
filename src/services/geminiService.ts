@@ -162,9 +162,8 @@ LOCATION CONTEXT: This scene is set in New Zealand (Southern Hemisphere, Oceania
   }
   
   if (generatedImageData) {
-    // Add watermark to the generated image
-    const watermarkedImage = await addWatermarkToImage(generatedImageData)
-    return watermarkedImage
+    // For conversational lighting edits, don't add another watermark since the original already has one
+    return generatedImageData
   }
   
   throw new Error(`No image generated during lighting edit. API Response: ${textResponse || 'No response text'}`)
