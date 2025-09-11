@@ -6,7 +6,10 @@ function HomePage() {
   return (
     <div className="home-page">
       <header className="hero">
-        <h1>MSpa AquaVision</h1>
+        <h1>
+          <img src="/spa-images/logo white -trademark-small.png" alt="MSpa" className="header-logo" />
+          AquaVision
+        </h1>
         <p>Visualise your dream spa pool in your own backyard using AI</p>
         <button 
           className="cta-button"

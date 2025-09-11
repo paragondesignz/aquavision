@@ -30,7 +30,10 @@ function VisualizerPage() {
   return (
     <div className="visualizer-page">
       <header className="page-header">
-        <h1>MSpa AquaVision</h1>
+        <h1>
+          <img src="/spa-images/logo white -trademark-small.png" alt="MSpa" className="header-logo" />
+          AquaVision
+        </h1>
         <div className="steps-indicator">
           <div className={`step ${currentStep === 'upload' ? 'active' : ''}`}>
             1. Upload Image
