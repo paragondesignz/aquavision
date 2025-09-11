@@ -232,31 +232,6 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
 
       <div className="controls">
         <div className="adjustment-panel">
-          <h3>Time of Day</h3>
-          <div className="time-control">
-            <div className="time-display">
-              <span className="time-value">{formatTime12Hour(timeOfDay)} - {getTimeDescription(timeOfDay)}</span>
-            </div>
-            <input
-              type="range"
-              min="7"
-              max="22"
-              value={timeOfDay}
-              onChange={(e) => setTimeOfDay(parseInt(e.target.value))}
-              className="time-slider"
-              disabled={processing}
-            />
-            <button
-              className="time-apply-button"
-              onClick={handleTimeChange}
-              disabled={processing}
-            >
-              🌅 Apply Lighting
-            </button>
-          </div>
-        </div>
-
-        <div className="adjustment-panel">
           <h3>Adjust Position</h3>
           
           <div className="regenerate-section">
@@ -294,6 +269,31 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
               disabled={processing}
             >
               ↓ Move Down
+            </button>
+          </div>
+        </div>
+
+        <div className="adjustment-panel">
+          <h3>Time of Day</h3>
+          <div className="time-control">
+            <div className="time-display">
+              <span className="time-value">{formatTime12Hour(timeOfDay)} - {getTimeDescription(timeOfDay)}</span>
+            </div>
+            <input
+              type="range"
+              min="7"
+              max="22"
+              value={timeOfDay}
+              onChange={(e) => setTimeOfDay(parseInt(e.target.value))}
+              className="time-slider"
+              disabled={processing}
+            />
+            <button
+              className="time-apply-button"
+              onClick={handleTimeChange}
+              disabled={processing}
+            >
+              🌅 Apply Lighting
             </button>
           </div>
         </div>
