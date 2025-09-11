@@ -82,6 +82,7 @@ function SpaSelector({ onSpaSelect, uploadedImage }: SpaSelectorProps) {
             <option value="rectangular">Rectangular</option>
           </select>
         </div>
+        </div>
 
         <div className="spa-grid">
         {filteredModels.map(spa => (
