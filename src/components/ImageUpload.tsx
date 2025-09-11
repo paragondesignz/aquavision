@@ -87,6 +87,48 @@ function ImageUpload({ onImageUpload }: ImageUploadProps) {
     cameraInputRef.current?.click()
   }
 
+  const handleExampleSelect = async (imagePath: string) => {
+    setError(null)
+    setLoading(true)
+    
+    try {
+      // Fetch the example image
+      const response = await fetch(imagePath)
+      const blob = await response.blob()
+      
+      // Create a File object from the blob
+      const file = new File([blob], imagePath.split('/').pop() || 'example.png', {
+        type: blob.type || 'image/png'
+      })
+      
+      // Create an image object to get dimensions
+      const img = new Image()
+      const url = URL.createObjectURL(file)
+      
+      img.onload = () => {
+        const uploadedImage: UploadedImage = {
+          file,
+          url,
+          width: img.width,
+          height: img.height
+        }
+        setPreview(url)
+        setLoading(false)
+        onImageUpload(uploadedImage)
+      }
+      
+      img.onerror = () => {
+        setError('Failed to load example image')
+        setLoading(false)
+      }
+      
+      img.src = url
+    } catch (error) {
+      setError('Failed to load example image')
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="image-upload">
       <div 
@@ -175,6 +217,35 @@ function ImageUpload({ onImageUpload }: ImageUploadProps) {
         {error && (
           <div className="error-message">{error}</div>
         )}
+      </div>
+
+      {/* Example Spaces Section */}
+      <div className="example-spaces">
+        <h3 className="example-spaces-title">Or try an example space</h3>
+        <p className="example-spaces-subtitle">Click on an example below to get started quickly</p>
+        <div className="example-spaces-grid">
+          <div 
+            className="example-space-card"
+            onClick={() => handleExampleSelect('/spaces/deck1.png')}
+          >
+            <img src="/spaces/deck1.png" alt="Example deck space 1" className="example-space-image" />
+            <p className="example-space-label">Modern Deck</p>
+          </div>
+          <div 
+            className="example-space-card"
+            onClick={() => handleExampleSelect('/spaces/deck2.png')}
+          >
+            <img src="/spaces/deck2.png" alt="Example deck space 2" className="example-space-image" />
+            <p className="example-space-label">Garden Patio</p>
+          </div>
+          <div 
+            className="example-space-card"
+            onClick={() => handleExampleSelect('/spaces/deck 3.png')}
+          >
+            <img src="/spaces/deck 3.png" alt="Example deck space 3" className="example-space-image" />
+            <p className="example-space-label">Outdoor Terrace</p>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -775,6 +775,69 @@ body {
   margin: 0;
 }
 
+.example-spaces {
+  max-width: 800px;
+  margin: 2rem auto 0;
+  padding: 2rem;
+  background: rgba(30, 33, 57, 0.6);
+  border-radius: 12px;
+  border: 1px solid #2d3748;
+}
+
+.example-spaces-title {
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.example-spaces-subtitle {
+  color: #94a3b8;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.example-spaces-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+}
+
+.example-space-card {
+  background: #1e2139;
+  border: 2px solid #2d3748;
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  max-width: 250px;
+}
+
+.example-space-card:hover {
+  border-color: rgb(255, 178, 107);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(255, 178, 107, 0.2);
+}
+
+.example-space-image {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.example-space-label {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
 .time-control {
   display: flex;
   flex-direction: column;
@@ -917,6 +980,21 @@ body {
   .upload-buttons .upload-button {
     width: 100%;
     max-width: 280px;
+  }
+  
+  /* Example spaces mobile styles */
+  .example-spaces {
+    margin: 1rem auto 0;
+    padding: 1.5rem;
+  }
+  
+  .example-spaces-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .example-space-card {
+    max-width: 100%;
   }
   
   /* Improve quick command buttons */
