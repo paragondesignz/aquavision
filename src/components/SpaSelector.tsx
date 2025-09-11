@@ -43,49 +43,8 @@ function SpaSelector({ onSpaSelect, uploadedImage }: SpaSelectorProps) {
 
   return (
     <div className="spa-selector">
-      {uploadedImage && (
-        <div className="space-preview">
-          <h2>Your Space</h2>
-          <img 
-            src={uploadedImage.url} 
-            alt="Uploaded space" 
-            className="space-preview-image"
-          />
-        </div>
-      )}
-      
-      <div className="spa-selection-panel">
-        <h2>Choose Your Spa</h2>
-        <div className="filters">
-        <div className="filter-group">
-          <label>Size:</label>
-          <select 
-            value={filterSize} 
-            onChange={(e) => setFilterSize(e.target.value as any)}
-          >
-            <option value="all">All Sizes</option>
-            <option value="small">Small (2-4 people)</option>
-            <option value="medium">Medium (5-6 people)</option>
-            <option value="large">Large (7+ people)</option>
-          </select>
-        </div>
-        
-        <div className="filter-group">
-          <label>Shape:</label>
-          <select 
-            value={filterShape} 
-            onChange={(e) => setFilterShape(e.target.value as any)}
-          >
-            <option value="all">All Shapes</option>
-            <option value="round">Round</option>
-            <option value="square">Square</option>
-            <option value="rectangular">Rectangular</option>
-          </select>
-        </div>
-        </div>
-
-        <div className="spa-grid">
-        {filteredModels.map(spa => (
+      <div className="spa-grid">
+        {spaModels.map(spa => (
           <div 
             key={spa.id}
             className={`spa-card ${selectedSpa?.id === spa.id ? 'selected' : ''}`}
@@ -100,9 +59,9 @@ function SpaSelector({ onSpaSelect, uploadedImage }: SpaSelectorProps) {
             </div>
           </div>
         ))}
-        </div>
+      </div>
 
-        {selectedSpa && (
+      {selectedSpa && (
         <div className="selection-panel">
           <div className="selected-spa-info">
             <h3>Selected: {selectedSpa.name}</h3>
@@ -116,8 +75,7 @@ function SpaSelector({ onSpaSelect, uploadedImage }: SpaSelectorProps) {
             Continue with {selectedSpa.name}
           </button>
         </div>
-        )}
-      </div>
+      )}
     </div>
   )
 }
