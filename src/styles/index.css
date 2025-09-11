@@ -420,7 +420,7 @@ body {
   width: 0; /* Allows flex item to shrink below content size if needed */
   /* Add max constraints to prevent excessive sizing */
   max-width: calc(100vw - 450px); /* Account for controls width + margins */
-  max-height: 80vh;
+  /* Remove max-height constraint to prevent cropping */
 }
 
 .controls {
@@ -439,7 +439,7 @@ body {
   image-rendering: -webkit-optimize-contrast;
   /* Center the image in its container */
   margin: 0 auto;
-  /* Respect container constraints while preserving quality */
+  /* Use contain to maintain aspect ratio without cropping */
   object-fit: contain;
 }
 
@@ -447,14 +447,16 @@ body {
 @media (max-width: 768px) {
   .visualization-container {
     max-width: 100%;
-    max-height: 70vh; /* Increased for better mobile viewing */
     margin: 0 auto;
+    /* Remove max-height to prevent cropping on mobile */
   }
   
   .result-image {
-    /* On mobile, allow more flexible sizing but still avoid upscaling */
-    max-width: min(100%, var(--image-natural-width, 1024px));
-    max-height: 70vh;
+    /* On mobile, allow flexible sizing while maintaining aspect ratio */
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    /* Remove height constraints to prevent cropping */
   }
   
   /* Improve mobile page layout */

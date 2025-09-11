@@ -211,10 +211,6 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
             alt="Spa visualization" 
             className="result-image"
             onLoad={handleImageLoad}
-            style={{
-              maxWidth: imageDimensions ? `${imageDimensions.width}px` : 'none',
-              maxHeight: imageDimensions ? `${imageDimensions.height}px` : 'none',
-            }}
           />
         ) : (
           <img 
@@ -222,10 +218,6 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
             alt="Original" 
             className="result-image"
             onLoad={handleImageLoad}
-            style={{
-              maxWidth: uploadedImage.width ? `${uploadedImage.width}px` : 'none',
-              maxHeight: uploadedImage.height ? `${uploadedImage.height}px` : 'none',
-            }}
           />
         )}
         
