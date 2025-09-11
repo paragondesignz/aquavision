@@ -54,7 +54,7 @@ function VisualizerPage() {
             <button className="back-button" onClick={handleBack}>
               ← Back
             </button>
-            <SpaSelector onSpaSelect={handleSpaSelect} uploadedImage={uploadedImage} />
+            <SpaSelector onSpaSelect={handleSpaSelect} />
           </>
         )}
         

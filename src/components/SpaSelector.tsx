@@ -1,35 +1,13 @@
 import { useState } from 'react'
-import { SpaModel, UploadedImage } from '../types'
+import { SpaModel } from '../types'
 import { spaModels } from '../data/spaModels'
 
 interface SpaSelectorProps {
   onSpaSelect: (spa: SpaModel) => void
-  uploadedImage: UploadedImage | null
 }
 
-function SpaSelector({ onSpaSelect, uploadedImage }: SpaSelectorProps) {
+function SpaSelector({ onSpaSelect }: SpaSelectorProps) {
   const [selectedSpa, setSelectedSpa] = useState<SpaModel | null>(null)
-  const [filterSize, setFilterSize] = useState<'all' | 'small' | 'medium' | 'large'>('all')
-  const [filterShape, setFilterShape] = useState<'all' | 'round' | 'square' | 'rectangular'>('all')
-
-  const filteredModels = spaModels.filter(spa => {
-    if (filterSize !== 'all') {
-      const capacity = spa.capacity
-      if (filterSize === 'small' && capacity > 4) return false
-      if (filterSize === 'medium' && (capacity < 5 || capacity > 6)) return false
-      if (filterSize === 'large' && capacity < 7) return false
-    }
-    
-    if (filterShape !== 'all') {
-      const { length, width } = spa.dimensions
-      const ratio = length / width
-      if (filterShape === 'square' && (ratio < 0.9 || ratio > 1.1)) return false
-      if (filterShape === 'round' && (ratio < 0.9 || ratio > 1.1)) return false
-      if (filterShape === 'rectangular' && ratio < 1.2) return false
-    }
-    
-    return true
-  })
 
   const handleSpaClick = (spa: SpaModel) => {
     setSelectedSpa(spa)
