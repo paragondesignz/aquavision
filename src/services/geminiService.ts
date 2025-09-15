@@ -270,9 +270,7 @@ async function generateImageWithSpa(
     - ONLY ADD the spa pool to the existing space - everything else must remain identical
     - The background space is perfect as-is and must not be touched or improved
     
-    CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
-    
-    LOGO ACCURACY: If the spa model has an MSpa logo visible on it, ensure the logo is accurately reproduced using the MSpa branding. The logo should be clearly visible and properly positioned as shown in the original spa image.
+    CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties. NEVER add any logos, text, or branding to the spa that aren't present in the original spa image.
     
     ALIGNMENT AND ORIENTATION RULES:
     - ALIGN the spa with existing architectural lines and deck geometry
@@ -290,7 +288,6 @@ async function generateImageWithSpa(
     - FILLED WITH CLEAR, CLEAN WATER that reflects light naturally and shows gentle water ripples
     - Water should appear crystal clear and inviting, not empty or dry
     - MAINTAIN the spa's original color: ${spaModel.selectedColor || 'original color as shown in the spa image'}
-    - PRESERVE all branding elements: If the spa has MSpa logos or branding visible, these must be accurately reproduced and clearly visible in the final image
     
     IMPORTANT: Only change the spa's position, size, and rotation. Keep all other visual aspects (color, texture, materials, design) exactly as they appear in the original spa image. ALWAYS show the spa filled with beautiful, clear water.
     
@@ -465,9 +462,7 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
     - ONLY change lighting conditions - everything else must remain identical
     - The background space is perfect as-is and must not be touched or improved
     
-    CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
-    
-    LOGO ACCURACY: If the spa model has an MSpa logo visible on it, ensure the logo is accurately reproduced using the MSpa branding. The logo should be clearly visible and properly positioned as shown in the original spa image.
+    CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties. NEVER add any logos, text, or branding to the spa that aren't present in the original spa image.
     `
     
     prompt += `
