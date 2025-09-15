@@ -18,7 +18,8 @@ export async function processWithGemini(
   command?: string,
   currentPosition?: Position,
   lightingPrompt?: string,
-  currentResultImage?: string
+  currentResultImage?: string,
+  isFirstGeneration?: boolean
 ): Promise<VisualizationResult> {
   
   if (!API_KEY) {
@@ -27,7 +28,8 @@ export async function processWithGemini(
 
   if (mode === 'initial') {
     // Use image generation for initial placement
-    const generatedImage = await generateImageWithSpa(uploadedImage, spaModel, undefined, lightingPrompt)
+    // Only add watermark if this is the very first generation (not regenerations)
+    const generatedImage = await generateImageWithSpa(uploadedImage, spaModel, undefined, lightingPrompt, isFirstGeneration)
     
     return {
       imageUrl: generatedImage,
@@ -52,6 +54,7 @@ export async function processWithGemini(
       }
     } else {
       // For regular position adjustments, regenerate with new instructions
+      // Never add watermark for adjustments
       const newPosition = adjustPositionByCommand(command || '', currentPosition || {
         x: 50,
         y: 50,
@@ -63,7 +66,8 @@ export async function processWithGemini(
         uploadedImage, 
         spaModel, 
         commandToPrompt(command || '', spaModel, lightingPrompt),
-        lightingPrompt
+        lightingPrompt,
+        false // Never add watermark for adjustments
       )
       
       return {
@@ -242,7 +246,8 @@ async function generateImageWithSpa(
   uploadedImage: UploadedImage,
   spaModel: SpaModel,
   customPrompt?: string,
-  lightingPrompt?: string
+  lightingPrompt?: string,
+  addWatermark: boolean = true
 ): Promise<string> {
   // Convert images to base64
   const imageBase64 = await fileToBase64(uploadedImage.file)
@@ -267,6 +272,8 @@ async function generateImageWithSpa(
     
     CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
     
+    LOGO ACCURACY: If the spa model has an MSpa logo visible on it, ensure the logo is accurately reproduced using the MSpa branding. The logo should be clearly visible and properly positioned as shown in the original spa image.
+    
     ALIGNMENT AND ORIENTATION RULES:
     - ALIGN the spa with existing architectural lines and deck geometry
     - If the deck/patio has straight edges, align the spa parallel to those edges
@@ -283,6 +290,7 @@ async function generateImageWithSpa(
     - FILLED WITH CLEAR, CLEAN WATER that reflects light naturally and shows gentle water ripples
     - Water should appear crystal clear and inviting, not empty or dry
     - MAINTAIN the spa's original color: ${spaModel.selectedColor || 'original color as shown in the spa image'}
+    - PRESERVE all branding elements: If the spa has MSpa logos or branding visible, these must be accurately reproduced and clearly visible in the final image
     
     IMPORTANT: Only change the spa's position, size, and rotation. Keep all other visual aspects (color, texture, materials, design) exactly as they appear in the original spa image. ALWAYS show the spa filled with beautiful, clear water.
     
@@ -375,9 +383,12 @@ async function generateImageWithSpa(
   }
   
   if (generatedImageData) {
-    // Add watermark to the generated image
-    const watermarkedImage = await addWatermarkToImage(generatedImageData)
-    return watermarkedImage
+    // Only add watermark if requested (first generation only)
+    if (addWatermark) {
+      const watermarkedImage = await addWatermarkToImage(generatedImageData)
+      return watermarkedImage
+    }
+    return generatedImageData
   }
   
   // If no image was generated, throw detailed error
@@ -455,6 +466,8 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
     - The background space is perfect as-is and must not be touched or improved
     
     CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
+    
+    LOGO ACCURACY: If the spa model has an MSpa logo visible on it, ensure the logo is accurately reproduced using the MSpa branding. The logo should be clearly visible and properly positioned as shown in the original spa image.
     `
     
     prompt += `

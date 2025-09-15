@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { UploadedImage } from '../types'
+import heic2any from 'heic2any'
 
 interface ImageUploadProps {
   onImageUpload: (image: UploadedImage) => void
@@ -29,27 +30,57 @@ function ImageUpload({ onImageUpload }: ImageUploadProps) {
 
     setLoading(true)
     
-    const url = URL.createObjectURL(file)
-    const img = new Image()
-    
-    img.onload = () => {
-      const uploadedImage: UploadedImage = {
-        file,
-        url,
-        width: img.width,
-        height: img.height
+    try {
+      let processedFile = file
+      
+      // Convert HEIC to JPEG if needed
+      if (file.type === 'image/heic') {
+        try {
+          const convertedBlob = await heic2any({
+            blob: file,
+            toType: 'image/jpeg',
+            quality: 0.9
+          }) as Blob
+          
+          processedFile = new File([convertedBlob], file.name.replace(/\.heic$/i, '.jpg'), {
+            type: 'image/jpeg',
+            lastModified: file.lastModified
+          })
+        } catch (conversionError) {
+          console.error('HEIC conversion failed:', conversionError)
+          setError('Failed to process HEIC image. Please try converting to JPEG first.')
+          setLoading(false)
+          return
+        }
       }
-      setPreview(url)
+      
+      const url = URL.createObjectURL(processedFile)
+      const img = new Image()
+      
+      img.onload = () => {
+        const uploadedImage: UploadedImage = {
+          file: processedFile,
+          url,
+          width: img.width,
+          height: img.height
+        }
+        setPreview(url)
+        setLoading(false)
+        onImageUpload(uploadedImage)
+      }
+      
+      img.onerror = () => {
+        setError('Failed to load image')
+        setLoading(false)
+        URL.revokeObjectURL(url)
+      }
+      
+      img.src = url
+    } catch (error) {
+      console.error('File processing error:', error)
+      setError('Failed to process image')
       setLoading(false)
-      onImageUpload(uploadedImage)
     }
-    
-    img.onerror = () => {
-      setError('Failed to load image')
-      setLoading(false)
-    }
-    
-    img.src = url
   }
 
   const handleDrag = (e: React.DragEvent) => {

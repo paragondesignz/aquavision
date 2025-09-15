@@ -10,7 +10,7 @@ export const spaModels: SpaModel[] = [
       height: 0.8
     },
     capacity: 6,
-    price: 1999,
+    price: 949,
     imageUrl: '/spa-images/bergen.png',
     colors: ['Arctic White', 'Teak', 'Charcoal Grey'],
     sku: 'A083021',
@@ -26,7 +26,7 @@ export const spaModels: SpaModel[] = [
       height: 0.8
     },
     capacity: 6,
-    price: 1999,
+    price: 1099,
     imageUrl: '/spa-images/tekapo.png',
     colors: ['Pure White', 'Lake Blue', 'Storm Grey'],
     sku: 'A083019',
@@ -42,7 +42,7 @@ export const spaModels: SpaModel[] = [
       height: 0.85
     },
     capacity: 4,
-    price: 2199,
+    price: 1099,
     imageUrl: '/spa-images/camaro.png',
     colors: ['Pearl White', 'Racing Red', 'Carbon Black'],
     sku: 'SPA-P-CA063',
@@ -58,7 +58,7 @@ export const spaModels: SpaModel[] = [
       height: 0.9
     },
     capacity: 6,
-    price: 2999,
+    price: 1999,
     imageUrl: '/spa-images/mono-eco-6.png',
     colors: ['Eco White', 'Forest Green', 'Stone Grey'],
     sku: 'F-MO062WE',
@@ -74,7 +74,7 @@ export const spaModels: SpaModel[] = [
       height: 0.95
     },
     capacity: 8,
-    price: 2999,
+    price: 2599,
     imageUrl: '/spa-images/mono-eco-8.png',
     colors: ['Alpine White', 'Sapphire Blue', 'Storm Grey', 'Sandstone'],
     sku: 'A083515',
@@ -106,7 +106,7 @@ export const spaModels: SpaModel[] = [
       height: 0.95
     },
     capacity: 4,
-    price: 3899,
+    price: 1999,
     imageUrl: '/spa-images/tuscany.png',
     colors: ['Ivory', 'Terracotta', 'Graphite'],
     sku: 'F-TU062W',

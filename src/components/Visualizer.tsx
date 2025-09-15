@@ -95,7 +95,16 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     setError(null)
     
     try {
-      const result = await processWithGemini(uploadedImage, selectedSpa, 'initial', undefined, undefined, getLightingPrompt(timeOfDay))
+      const result = await processWithGemini(
+        uploadedImage, 
+        selectedSpa, 
+        'initial', 
+        undefined, 
+        undefined, 
+        getLightingPrompt(timeOfDay),
+        undefined,
+        true // This is the first generation - add watermark
+      )
       setPosition(result.position)
       setResultImage(result.imageUrl)
     } catch (err) {
@@ -158,7 +167,16 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     setError(null)
     
     try {
-      const result = await processWithGemini(uploadedImage, selectedSpa, 'initial', undefined, undefined, getLightingPrompt(timeOfDay))
+      const result = await processWithGemini(
+        uploadedImage, 
+        selectedSpa, 
+        'initial', 
+        undefined, 
+        undefined, 
+        getLightingPrompt(timeOfDay),
+        undefined,
+        false // This is a regeneration - don't add another watermark
+      )
       setPosition(result.position)
       setResultImage(result.imageUrl)
     } catch (err) {
@@ -167,6 +185,17 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     } finally {
       setProcessing(false)
     }
+  }
+
+  const handleReset = () => {
+    setResultImage(null)
+    setPosition({
+      x: 50,
+      y: 50,
+      scale: 1,
+      rotation: 0
+    })
+    setError(null)
   }
 
 
@@ -248,6 +277,15 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
               Generate New Placement
             </button>
             <p className="regenerate-info">Try a different AI placement for your spa</p>
+            
+            <button 
+              className="reset-button"
+              onClick={handleReset}
+              disabled={processing || !resultImage}
+            >
+              Reset to Original
+            </button>
+            <p className="reset-info">Remove the spa and show original image</p>
           </div>
           
           <div className="quick-commands">
