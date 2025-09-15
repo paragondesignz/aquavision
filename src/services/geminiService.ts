@@ -18,8 +18,7 @@ export async function processWithGemini(
   command?: string,
   currentPosition?: Position,
   lightingPrompt?: string,
-  currentResultImage?: string,
-  isFirstGeneration?: boolean
+  currentResultImage?: string
 ): Promise<VisualizationResult> {
   
   if (!API_KEY) {
@@ -28,8 +27,7 @@ export async function processWithGemini(
 
   if (mode === 'initial') {
     // Use image generation for initial placement
-    // Only add watermark if this is the very first generation (not regenerations)
-    const generatedImage = await generateImageWithSpa(uploadedImage, spaModel, undefined, lightingPrompt, isFirstGeneration)
+    const generatedImage = await generateImageWithSpa(uploadedImage, spaModel, undefined, lightingPrompt)
     
     return {
       imageUrl: generatedImage,
@@ -66,8 +64,7 @@ export async function processWithGemini(
         uploadedImage, 
         spaModel, 
         commandToPrompt(command || '', spaModel, lightingPrompt),
-        lightingPrompt,
-        false // Never add watermark for adjustments
+        lightingPrompt
       )
       
       return {
@@ -173,7 +170,7 @@ LOCATION CONTEXT: This scene is set in New Zealand (Southern Hemisphere, Oceania
   throw new Error(`No image generated during lighting edit. API Response: ${textResponse || 'No response text'}`)
 }
 
-async function addWatermarkToImage(imageDataUrl: string): Promise<string> {
+export async function addWatermarkToImage(imageDataUrl: string): Promise<string> {
   return new Promise((resolve, reject) => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
@@ -246,8 +243,7 @@ async function generateImageWithSpa(
   uploadedImage: UploadedImage,
   spaModel: SpaModel,
   customPrompt?: string,
-  lightingPrompt?: string,
-  addWatermark: boolean = true
+  lightingPrompt?: string
 ): Promise<string> {
   // Convert images to base64
   const imageBase64 = await fileToBase64(uploadedImage.file)
@@ -380,11 +376,7 @@ async function generateImageWithSpa(
   }
   
   if (generatedImageData) {
-    // Only add watermark if requested (first generation only)
-    if (addWatermark) {
-      const watermarkedImage = await addWatermarkToImage(generatedImageData)
-      return watermarkedImage
-    }
+    // Don't add watermark during generation - it will be added on download
     return generatedImageData
   }
   

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { UploadedImage, SpaModel, Position } from '../types'
-import { processWithGemini } from '../services/geminiService'
+import { processWithGemini, addWatermarkToImage } from '../services/geminiService'
 
 interface VisualizerProps {
   uploadedImage: UploadedImage
@@ -101,9 +101,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
         'initial', 
         undefined, 
         undefined, 
-        getLightingPrompt(timeOfDay),
-        undefined,
-        true // This is the first generation - add watermark
+        getLightingPrompt(timeOfDay)
       )
       setPosition(result.position)
       setResultImage(result.imageUrl)
@@ -173,9 +171,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
         'initial', 
         undefined, 
         undefined, 
-        getLightingPrompt(timeOfDay),
-        undefined,
-        false // This is a regeneration - don't add another watermark
+        getLightingPrompt(timeOfDay)
       )
       setPosition(result.position)
       setResultImage(result.imageUrl)
@@ -206,14 +202,19 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     
     if (isMobile) {
+      // For mobile, we can't intercept the long-press save, so watermark won't be added
+      // This is actually fine as it prevents watermark duplication issues
       alert('To save your image: Long-press the image above and select "Save to Photos" or "Download Image"')
       return
     }
     
-    // Desktop download
+    // Desktop download - add watermark before downloading
     try {
+      // Add watermark to the image
+      const watermarkedImage = await addWatermarkToImage(resultImage)
+      
       const link = document.createElement('a')
-      link.href = resultImage
+      link.href = watermarkedImage
       link.download = `spa-visualization-${Date.now()}.jpg`
       link.click()
     } catch (error) {
