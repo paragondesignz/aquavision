@@ -194,8 +194,6 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
 
 
   const handleDownload = async () => {
-    if (!resultImage) return
-    
     // Check if we're on mobile - if so, just show instructions
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
     
@@ -206,14 +204,19 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
       return
     }
     
-    // Desktop download - add watermark before downloading
+    // Desktop download - determine which image to download and add watermark
     try {
-      // Add watermark to the image
-      const watermarkedImage = await addWatermarkToImage(resultImage)
+      // Get the currently displayed image (original or spa version)
+      // If no spa version exists yet, always download the original
+      const imageToDownload = (resultImage && !showingOriginal) ? resultImage : uploadedImage.url
+      
+      // Add watermark to whichever image is currently showing
+      const watermarkedImage = await addWatermarkToImage(imageToDownload)
       
       const link = document.createElement('a')
       link.href = watermarkedImage
-      link.download = `spa-visualization-${Date.now()}.jpg`
+      const filename = showingOriginal ? `original-space-${Date.now()}.jpg` : `spa-visualization-${Date.now()}.jpg`
+      link.download = filename
       link.click()
     } catch (error) {
       console.error('Download failed:', error)

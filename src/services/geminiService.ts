@@ -87,6 +87,13 @@ async function generateConversationalLightingEdit(
   // Use conversational editing approach as recommended by Gemini documentation
   const conversationalPrompt = `Keep everything in this image exactly the same - the spa position, size, orientation, colors, and all other elements must remain completely unchanged. Only change the lighting and atmospheric conditions.
 
+*** CRITICAL: THERE IS EXACTLY ONE SPA POOL IN THIS IMAGE ***
+- DO NOT add any additional spa pools or hot tubs
+- DO NOT duplicate the existing spa
+- DO NOT create multiple spas
+- There must be EXACTLY ONE spa pool in the final image - the same one that's already there
+- NEVER add, duplicate, or create additional spa pools under any circumstances
+
 ${lightingPrompt}
 
 CRITICAL CONVERSATIONAL EDITING INSTRUCTIONS:
@@ -95,6 +102,7 @@ CRITICAL CONVERSATIONAL EDITING INSTRUCTIONS:
 - ONLY change lighting, shadows, sky colors, and atmospheric effects
 - Maintain all object positions, colors, and arrangements exactly as they are
 - The goal is to show the same scene with different lighting conditions
+- MAINTAIN THE EXACT SAME NUMBER OF OBJECTS - do not add or remove anything
 
 ABSOLUTE SPACE PRESERVATION RULES:
 - NEVER alter, modify, or change the background space/environment in any way
@@ -102,6 +110,7 @@ ABSOLUTE SPACE PRESERVATION RULES:
 - NEVER change the landscaping, grass, plants, trees, or garden features
 - NEVER alter the ground surfaces, pathways, or hardscaping
 - NEVER modify furniture, outdoor equipment, or existing objects in the space
+- NEVER add additional spa pools, hot tubs, or any other objects
 - The ONLY things that can change are: lighting, shadows, sky color, and atmospheric effects
 - The space must remain 100% identical except for lighting conditions
 
@@ -265,6 +274,12 @@ async function generateImageWithSpa(
     - NEVER modify existing furniture, outdoor equipment, or objects in the space
     - ONLY ADD the spa pool to the existing space - everything else must remain identical
     - The background space is perfect as-is and must not be touched or improved
+    
+    *** CRITICAL: ADD EXACTLY ONE SPA POOL ONLY ***
+    - Place EXACTLY ONE spa pool in the scene - no more, no less
+    - DO NOT add multiple spa pools or hot tubs
+    - DO NOT duplicate or create additional spas
+    - There must be EXACTLY ONE ${spaModel.name} spa pool in the final image
     
     CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties. NEVER add any logos, text, or branding to the spa that aren't present in the original spa image.
     
@@ -478,6 +493,13 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
   - NEVER modify existing furniture, outdoor equipment, or objects in the space
   - ONLY reposition the spa pool within the existing space - everything else must remain identical
   - The background space is perfect as-is and must not be touched or improved
+  
+  *** CRITICAL: MAINTAIN EXACTLY ONE SPA POOL ***
+  - There is already EXACTLY ONE spa pool in the scene - maintain only that one
+  - DO NOT add additional spa pools or hot tubs
+  - DO NOT duplicate the existing spa
+  - DO NOT create multiple spas
+  - Only adjust the position of the existing single spa pool
   
   CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
   
