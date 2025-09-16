@@ -17,6 +17,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     rotation: 0
   })
   const [resultImage, setResultImage] = useState<string | null>(null)
+  const [showingOriginal, setShowingOriginal] = useState(false)
   const [timeOfDay, setTimeOfDay] = useState(12) // 24-hour format, 12 = noon, range 7-22
   const [tipIndex, setTipIndex] = useState(0)
 
@@ -105,6 +106,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
       )
       setPosition(result.position)
       setResultImage(result.imageUrl)
+      setShowingOriginal(false) // Always show the new spa version when generated
     } catch (err) {
       setError('Failed to process image. Please try again.')
       console.error(err)
@@ -129,6 +131,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
       )
       // Keep the same position since we're only changing lighting
       setResultImage(result.imageUrl)
+      setShowingOriginal(false) // Always show the new spa version when updated
     } catch (err) {
       setError('Failed to update lighting. Please try again.')
       console.error(err)
@@ -152,6 +155,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
       )
       setPosition(result.position)
       setResultImage(result.imageUrl)
+      setShowingOriginal(false) // Always show the new spa version when adjusted
     } catch (err) {
       setError('Failed to adjust position. Please try again.')
       console.error(err)
@@ -175,6 +179,7 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
       )
       setPosition(result.position)
       setResultImage(result.imageUrl)
+      setShowingOriginal(false) // Always show the new spa version when regenerated
     } catch (err) {
       setError('Failed to regenerate image. Please try again.')
       console.error(err)
@@ -183,15 +188,8 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
     }
   }
 
-  const handleReset = () => {
-    setResultImage(null)
-    setPosition({
-      x: 50,
-      y: 50,
-      scale: 1,
-      rotation: 0
-    })
-    setError(null)
+  const handleToggleView = () => {
+    setShowingOriginal(!showingOriginal)
   }
 
 
@@ -238,8 +236,8 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
           
           {resultImage ? (
             <img 
-              src={resultImage} 
-              alt="Spa visualization" 
+              src={showingOriginal ? uploadedImage.url : resultImage} 
+              alt={showingOriginal ? "Original space" : "Spa visualization"} 
               className="result-image"
             />
           ) : (
@@ -281,12 +279,12 @@ function Visualizer({ uploadedImage, selectedSpa }: VisualizerProps) {
             
             <button 
               className="reset-button"
-              onClick={handleReset}
+              onClick={handleToggleView}
               disabled={processing || !resultImage}
             >
-              Reset to Original
+              {showingOriginal ? 'Show Spa Version' : 'Show Original'}
             </button>
-            <p className="reset-info">Remove the spa and show original image</p>
+            <p className="reset-info">Toggle between original and spa visualization</p>
           </div>
           
           <div className="quick-commands">
