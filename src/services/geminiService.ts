@@ -358,7 +358,7 @@ async function fetchImageAsBase64(url: string): Promise<string> {
   })
 }
 
-function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: string): string {
+function commandToPrompt(command: string, _spaModel: SpaModel, lightingPrompt?: string): string {
   const lowerCommand = command.toLowerCase()
   
   if (lowerCommand.includes('change lighting only') || lowerCommand.includes('maintain current position')) {
