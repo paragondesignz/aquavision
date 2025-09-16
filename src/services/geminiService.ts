@@ -497,10 +497,10 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
     prompt += 'Move the spa to the right. '
   }
   
-  if (lowerCommand.includes('up') || lowerCommand.includes('top')) {
-    prompt += 'Move the spa upward/toward the top of the image. '
-  } else if (lowerCommand.includes('down') || lowerCommand.includes('bottom')) {
-    prompt += 'Move the spa downward/toward the bottom of the image. '
+  if (lowerCommand.includes('up') || lowerCommand.includes('back')) {
+    prompt += 'Move the spa further back in the scene (deeper into the background, away from the camera viewpoint). Position it further away from the viewer, making it appear more distant and smaller due to perspective. This creates depth by moving the spa toward the back of the outdoor space. '
+  } else if (lowerCommand.includes('down') || lowerCommand.includes('forward')) {
+    prompt += 'Move the spa closer to the foreground (nearer to the camera viewpoint). Position it closer to the viewer, making it appear larger and more prominent due to perspective. This brings the spa toward the front of the outdoor space, closer to where someone would be standing to take the photo. '
   }
   
   if (lowerCommand.includes('rotate')) {
