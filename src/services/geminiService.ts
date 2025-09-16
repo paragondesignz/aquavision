@@ -240,14 +240,15 @@ async function generateImageWithSpa(
   const prompt = customPrompt || `Place the spa from the second image into the outdoor space shown in the first image.
 
 CRITICAL RULES:
-1. Use EXACTLY the spa shown in the second image - copy its appearance exactly
-2. Do not change the spa's color, design, or add any logos/text to it
-3. Keep the background space exactly as shown - do not modify anything
-4. Place only ONE spa in the scene
-5. Fill the spa with clear water
-6. Size it appropriately for the space (${spaModel.dimensions.length}m x ${spaModel.dimensions.width}m)
+1. Use EXACTLY the spa shown in the second image - copy its appearance, color, and design exactly
+2. This is an ABOVE GROUND spa - place it ON TOP of the deck/patio surface, never sunken in
+3. Scale it correctly: ${spaModel.dimensions.length}m x ${spaModel.dimensions.width}m (use doors/windows for reference)
+4. Keep the background space unchanged - do not modify the existing environment
+5. Place only ONE spa in the scene
+6. Fill the spa with clear water and ensure it looks realistic
+7. NEVER add logos, text, or branding that isn't in the original spa image
 
-Generate a high-quality, realistic image showing this spa naturally integrated into the outdoor space.${lightingPrompt ? ` Apply this lighting: ${lightingPrompt}` : ''}`
+Generate a high-quality, realistic image showing this above-ground spa naturally placed on the deck/patio surface.${lightingPrompt ? ` Apply this lighting: ${lightingPrompt}` : ''}`
 
   const config = {
     responseModalities: ['IMAGE', 'TEXT'] as string[],
@@ -364,14 +365,14 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
     return `Change only the lighting. Keep everything else exactly the same. Apply: ${lightingPrompt}`
   }
   
-  let prompt = `Adjust the spa position. Keep the spa appearance identical to the reference image. `
+  let prompt = `Adjust the spa position. Keep the spa appearance identical to the reference image. This is an ABOVE GROUND spa - keep it on top of the deck/patio surface. `
   
   if (lowerCommand.includes('left')) prompt += 'Move spa left. '
   if (lowerCommand.includes('right')) prompt += 'Move spa right. '
   if (lowerCommand.includes('up') || lowerCommand.includes('back')) prompt += 'Move spa back. '
   if (lowerCommand.includes('down') || lowerCommand.includes('forward')) prompt += 'Move spa forward. '
   
-  prompt += 'Do not add logos or change spa design.'
+  prompt += 'Never add logos or change spa design. Fill with clear water.'
   
   if (lightingPrompt) prompt += ` Apply lighting: ${lightingPrompt}`
   
