@@ -245,7 +245,7 @@ MANDATORY RULES:
 1. Copy the spa appearance EXACTLY - if the spa image shows no logos, add NO logos
 2. NO logos, NO text, NO branding, NO graphics on the spa - copy only what you see
 3. This is an ABOVE GROUND spa - place it ON TOP of the deck/patio surface
-4. Scale correctly: ${spaModel.dimensions.length}m x ${spaModel.dimensions.width}m
+4. CRITICAL SCALING: Size the spa to ${spaModel.dimensions.length}m x ${spaModel.dimensions.width}m x ${spaModel.dimensions.height}m. Use these references: doors are ~2m high, windows ~1-1.5m wide, outdoor chairs ~0.8m high, railings ~1m high. Scale the spa accurately using these objects as size references.
 5. Place only ONE spa in the scene
 6. Fill with clear water
 7. DO NOT modify the background space
@@ -369,7 +369,7 @@ function commandToPrompt(command: string, _spaModel: SpaModel, lightingPrompt?: 
   
   let prompt = `CRITICAL: Keep spa appearance identical to reference image - NO logos added. Adjust position only.
 
-This is an ABOVE GROUND spa - keep it on top of the deck/patio surface. `
+This is an ABOVE GROUND spa (${_spaModel.dimensions.length}m x ${_spaModel.dimensions.width}m x ${_spaModel.dimensions.height}m) - keep it on top of the deck/patio surface. Maintain proper scale using doors (~2m high), windows (~1-1.5m wide), chairs (~0.8m high) as references. `
   
   if (lowerCommand.includes('left')) prompt += 'Move spa left. '
   if (lowerCommand.includes('right')) prompt += 'Move spa right. '
