@@ -211,6 +211,21 @@ export async function addWatermarkToImage(imageDataUrl: string): Promise<string>
         ctx.globalAlpha = 0.5 // 50% opacity (down from 67%)
         ctx.drawImage(watermark, x, y, logoWidth, logoHeight)
         
+        // Add website URL text next to the logo
+        ctx.font = 'bold 16px Arial, sans-serif'
+        ctx.fillStyle = 'white'
+        ctx.globalAlpha = 0.5 // Same 50% opacity as logo
+        
+        // Position text to the right of the logo with some spacing
+        const textX = x + logoWidth + 10
+        const textY = y + logoHeight / 2 + 6 // Center vertically with logo
+        ctx.fillText('www.portablespas.co.nz', textX, textY)
+        
+        // Add a subtle text shadow for better readability
+        ctx.globalAlpha = 0.3 // Slightly less opacity for shadow
+        ctx.fillStyle = 'black'
+        ctx.fillText('www.portablespas.co.nz', textX + 1, textY + 1)
+        
         // Convert to data URL with PNG to preserve transparency
         const watermarkedImage = canvas.toDataURL('image/png')
         resolve(watermarkedImage)
