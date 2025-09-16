@@ -281,7 +281,15 @@ async function generateImageWithSpa(
     - DO NOT duplicate or create additional spas
     - There must be EXACTLY ONE ${spaModel.name} spa pool in the final image
     
-    CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties. NEVER add any logos, text, or branding to the spa that aren't present in the original spa image.
+    *** ABSOLUTELY CRITICAL: SPA APPEARANCE RULES ***
+    - Keep the spa's EXACT original appearance, color, texture, and design unchanged
+    - Do NOT modify the spa's color, finish, or any visual properties
+    - NEVER add any logos, text, or branding to the spa that aren't present in the original spa image
+    - NEVER add MSpa logos, brand names, or any text to the spa surface
+    - NEVER add decals, stickers, or graphics to the spa that aren't in the reference image
+    - If the original spa image shows no logos, the final image must show no logos on the spa
+    - Only reproduce what is actually visible in the original spa reference image - nothing more
+    - DO NOT enhance, improve, or add branding elements to the spa
     
     ALIGNMENT AND ORIENTATION RULES:
     - ALIGN the spa with existing architectural lines and deck geometry
@@ -299,8 +307,13 @@ async function generateImageWithSpa(
     - FILLED WITH CLEAR, CLEAN WATER that reflects light naturally and shows gentle water ripples
     - Water should appear crystal clear and inviting, not empty or dry
     - MAINTAIN the spa's original color: ${spaModel.selectedColor || 'original color as shown in the spa image'}
+    - NEVER add logos, text, branding, or graphics that aren't in the original spa reference image
+    - REPLICATE EXACTLY what is shown in the spa reference image - no additions or enhancements
     
     IMPORTANT: Only change the spa's position, size, and rotation. Keep all other visual aspects (color, texture, materials, design) exactly as they appear in the original spa image. ALWAYS show the spa filled with beautiful, clear water.
+    
+    *** FINAL CRITICAL REMINDER: DO NOT ADD ANY LOGOS OR TEXT TO THE SPA ***
+    The spa must look EXACTLY like the reference image - no logos, no text, no branding additions of any kind.
     
     Make it look like the spa naturally belongs in this space and was designed to complement the existing architecture while preserving its authentic appearance and showing it ready for use with clean water.
     
@@ -469,7 +482,15 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
     - ONLY change lighting conditions - everything else must remain identical
     - The background space is perfect as-is and must not be touched or improved
     
-    CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties. NEVER add any logos, text, or branding to the spa that aren't present in the original spa image.
+    *** ABSOLUTELY CRITICAL: SPA APPEARANCE RULES ***
+    - Keep the spa's EXACT original appearance, color, texture, and design unchanged
+    - Do NOT modify the spa's color, finish, or any visual properties
+    - NEVER add any logos, text, or branding to the spa that aren't present in the original spa image
+    - NEVER add MSpa logos, brand names, or any text to the spa surface
+    - NEVER add decals, stickers, or graphics to the spa that aren't in the reference image
+    - If the original spa image shows no logos, the final image must show no logos on the spa
+    - Only reproduce what is actually visible in the original spa reference image - nothing more
+    - DO NOT enhance, improve, or add branding elements to the spa
     `
     
     prompt += `
@@ -551,6 +572,9 @@ function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: s
   prompt += `
   
   IMPORTANT: Only change the spa's position, size, and rotation. Keep all other visual aspects (color: ${spaModel.selectedColor || 'original'}, texture, materials, design) exactly as they appear in the original spa image.
+  
+  *** CRITICAL: NO LOGO/TEXT ADDITIONS TO SPA ***
+  Do NOT add any logos, text, branding, decals, or graphics to the spa that aren't in the original reference image. The spa must look exactly like the reference - nothing added.
   
   ALWAYS show the spa FILLED WITH CLEAR, CLEAN WATER that reflects light naturally and shows gentle water ripples. Water should appear crystal clear and inviting, never empty or dry.
   
