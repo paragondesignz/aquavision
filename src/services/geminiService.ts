@@ -85,15 +85,17 @@ async function generateConversationalLightingEdit(
     : currentImageDataUrl
 
   // Use conversational editing approach as recommended by Gemini documentation
-  const conversationalPrompt = `CRITICAL: Change ONLY the lighting. Keep the spa EXACTLY as it appears - NO logo changes.
+  const conversationalPrompt = `CRITICAL LIGHTING-ONLY EDIT: There is EXACTLY ONE spa in this image. Keep EXACTLY ONE spa.
 
-RULES:
-1. Do not move, add, or remove anything in the image
-2. Only change lighting, shadows, and sky colors  
-3. Keep the spa exactly where it is with the same appearance - NO logos added or removed
-4. Apply this lighting: ${lightingPrompt}
+ABSOLUTE RULES:
+1. NEVER add additional spa pools - keep EXACTLY ONE spa
+2. NEVER duplicate the existing spa pool
+3. NEVER create multiple spas - there must be EXACTLY ONE spa in the final image
+4. Change ONLY lighting, shadows, and sky colors
+5. Keep the existing spa in its exact position with exact appearance
+6. Apply this lighting: ${lightingPrompt}
 
-CRITICAL: Do NOT add any logos or text to the spa. Keep it exactly as shown.`
+CRITICAL: If you create multiple spas or add any spa pools, you have completely failed. EXACTLY ONE spa only.`
 
   const config = {
     responseModalities: ['IMAGE', 'TEXT'] as string[],
@@ -364,7 +366,7 @@ function commandToPrompt(command: string, _spaModel: SpaModel, lightingPrompt?: 
   const lowerCommand = command.toLowerCase()
   
   if (lowerCommand.includes('change lighting only') || lowerCommand.includes('maintain current position')) {
-    return `Change only the lighting. Keep everything else exactly the same. Apply: ${lightingPrompt}`
+    return `CRITICAL: Change ONLY lighting. EXACTLY ONE spa must remain - NEVER add or duplicate spas. Keep everything else exactly the same. Apply: ${lightingPrompt}`
   }
   
   let prompt = `CRITICAL: Keep spa appearance identical to reference image - NO logos added. Adjust position only.
