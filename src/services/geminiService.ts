@@ -85,15 +85,15 @@ async function generateConversationalLightingEdit(
     : currentImageDataUrl
 
   // Use conversational editing approach as recommended by Gemini documentation
-  const conversationalPrompt = `Change only the lighting in this image. Keep everything else exactly the same.
+  const conversationalPrompt = `CRITICAL: Change ONLY the lighting. Keep the spa EXACTLY as it appears - NO logo changes.
 
 RULES:
 1. Do not move, add, or remove anything in the image
-2. Only change lighting, shadows, and sky colors
-3. Keep the spa exactly where it is with the same appearance
+2. Only change lighting, shadows, and sky colors  
+3. Keep the spa exactly where it is with the same appearance - NO logos added or removed
 4. Apply this lighting: ${lightingPrompt}
 
-The image shows a New Zealand outdoor space.`
+CRITICAL: Do NOT add any logos or text to the spa. Keep it exactly as shown.`
 
   const config = {
     responseModalities: ['IMAGE', 'TEXT'] as string[],
@@ -237,18 +237,20 @@ async function generateImageWithSpa(
   const imageBase64 = await fileToBase64(uploadedImage.file)
   const spaImageBase64 = await fetchImageAsBase64(spaModel.imageUrl)
   
-  const prompt = customPrompt || `Place the spa from the second image into the outdoor space shown in the first image.
+  const prompt = customPrompt || `CRITICAL: Copy the spa from the second image EXACTLY as shown - NO logos, NO text, NO branding additions.
 
-CRITICAL RULES:
-1. Use EXACTLY the spa shown in the second image - copy its appearance, color, and design exactly
-2. This is an ABOVE GROUND spa - place it ON TOP of the deck/patio surface, never sunken in
-3. Scale it correctly: ${spaModel.dimensions.length}m x ${spaModel.dimensions.width}m (use doors/windows for reference)
-4. Keep the background space unchanged - do not modify the existing environment
+Place this spa into the outdoor space shown in the first image.
+
+MANDATORY RULES:
+1. Copy the spa appearance EXACTLY - if the spa image shows no logos, add NO logos
+2. NO logos, NO text, NO branding, NO graphics on the spa - copy only what you see
+3. This is an ABOVE GROUND spa - place it ON TOP of the deck/patio surface
+4. Scale correctly: ${spaModel.dimensions.length}m x ${spaModel.dimensions.width}m
 5. Place only ONE spa in the scene
-6. Fill the spa with clear water and ensure it looks realistic
-7. NEVER add logos, text, or branding that isn't in the original spa image
+6. Fill with clear water
+7. DO NOT modify the background space
 
-Generate a high-quality, realistic image showing this above-ground spa naturally placed on the deck/patio surface.${lightingPrompt ? ` Apply this lighting: ${lightingPrompt}` : ''}`
+CRITICAL: If you add ANY logos or text to the spa that aren't in the reference image, you have failed.${lightingPrompt ? ` Apply this lighting: ${lightingPrompt}` : ''}`
 
   const config = {
     responseModalities: ['IMAGE', 'TEXT'] as string[],
@@ -365,14 +367,16 @@ function commandToPrompt(command: string, _spaModel: SpaModel, lightingPrompt?: 
     return `Change only the lighting. Keep everything else exactly the same. Apply: ${lightingPrompt}`
   }
   
-  let prompt = `Adjust the spa position. Keep the spa appearance identical to the reference image. This is an ABOVE GROUND spa - keep it on top of the deck/patio surface. `
+  let prompt = `CRITICAL: Keep spa appearance identical to reference image - NO logos added. Adjust position only.
+
+This is an ABOVE GROUND spa - keep it on top of the deck/patio surface. `
   
   if (lowerCommand.includes('left')) prompt += 'Move spa left. '
   if (lowerCommand.includes('right')) prompt += 'Move spa right. '
   if (lowerCommand.includes('up') || lowerCommand.includes('back')) prompt += 'Move spa back. '
   if (lowerCommand.includes('down') || lowerCommand.includes('forward')) prompt += 'Move spa forward. '
   
-  prompt += 'Never add logos or change spa design. Fill with clear water.'
+  prompt += 'CRITICAL: NO logos, NO text, NO branding on spa. Fill with clear water.'
   
   if (lightingPrompt) prompt += ` Apply lighting: ${lightingPrompt}`
   
