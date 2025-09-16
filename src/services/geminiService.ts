@@ -196,8 +196,8 @@ export async function addWatermarkToImage(imageDataUrl: string): Promise<string>
       watermark.crossOrigin = 'anonymous'
       
       watermark.onload = () => {
-        // Calculate proper proportions and larger size
-        const maxWidth = 80 // Make it larger - 80px max width
+        // Calculate proper proportions and larger size (30% bigger than before)
+        const maxWidth = 104 // 80px * 1.3 = 104px max width
         const aspectRatio = watermark.width / watermark.height
         
         let logoWidth, logoHeight
@@ -217,8 +217,8 @@ export async function addWatermarkToImage(imageDataUrl: string): Promise<string>
         const x = padding
         const y = canvas.height - logoHeight - padding
         
-        // Draw the watermark logo directly (no background - fully transparent)
-        ctx.globalAlpha = 0.67 // 67% opacity
+        // Draw the watermark logo with reduced opacity (less opaque)
+        ctx.globalAlpha = 0.5 // 50% opacity (down from 67%)
         ctx.drawImage(watermark, x, y, logoWidth, logoHeight)
         
         // Convert to data URL with PNG to preserve transparency
