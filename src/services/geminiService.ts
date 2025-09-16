@@ -85,36 +85,15 @@ async function generateConversationalLightingEdit(
     : currentImageDataUrl
 
   // Use conversational editing approach as recommended by Gemini documentation
-  const conversationalPrompt = `Keep everything in this image exactly the same - the spa position, size, orientation, colors, and all other elements must remain completely unchanged. Only change the lighting and atmospheric conditions.
+  const conversationalPrompt = `Change only the lighting in this image. Keep everything else exactly the same.
 
-*** CRITICAL: THERE IS EXACTLY ONE SPA POOL IN THIS IMAGE ***
-- DO NOT add any additional spa pools or hot tubs
-- DO NOT duplicate the existing spa
-- DO NOT create multiple spas
-- There must be EXACTLY ONE spa pool in the final image - the same one that's already there
-- NEVER add, duplicate, or create additional spa pools under any circumstances
+RULES:
+1. Do not move, add, or remove anything in the image
+2. Only change lighting, shadows, and sky colors
+3. Keep the spa exactly where it is with the same appearance
+4. Apply this lighting: ${lightingPrompt}
 
-${lightingPrompt}
-
-CRITICAL CONVERSATIONAL EDITING INSTRUCTIONS:
-- This is a follow-up edit to preserve the original composition
-- DO NOT move, resize, or reposition any objects, especially the spa
-- ONLY change lighting, shadows, sky colors, and atmospheric effects
-- Maintain all object positions, colors, and arrangements exactly as they are
-- The goal is to show the same scene with different lighting conditions
-- MAINTAIN THE EXACT SAME NUMBER OF OBJECTS - do not add or remove anything
-
-ABSOLUTE SPACE PRESERVATION RULES:
-- NEVER alter, modify, or change the background space/environment in any way
-- NEVER add, remove, or modify any architectural elements (decks, patios, railings, walls, structures)
-- NEVER change the landscaping, grass, plants, trees, or garden features
-- NEVER alter the ground surfaces, pathways, or hardscaping
-- NEVER modify furniture, outdoor equipment, or existing objects in the space
-- NEVER add additional spa pools, hot tubs, or any other objects
-- The ONLY things that can change are: lighting, shadows, sky color, and atmospheric effects
-- The space must remain 100% identical except for lighting conditions
-
-LOCATION CONTEXT: This scene is set in New Zealand (Southern Hemisphere, Oceania). Apply lighting that is accurate for New Zealand's geographic location, climate, and lighting conditions.`
+The image shows a New Zealand outdoor space.`
 
   const config = {
     responseModalities: ['IMAGE', 'TEXT'] as string[],
@@ -258,89 +237,17 @@ async function generateImageWithSpa(
   const imageBase64 = await fileToBase64(uploadedImage.file)
   const spaImageBase64 = await fetchImageAsBase64(spaModel.imageUrl)
   
-  const prompt = customPrompt || `Place this ${spaModel.name} spa pool in the most optimal space in the scene. Ensure it is optimally sized, rotated and oriented.
-    
-    IMAGE QUALITY REQUIREMENTS:
-    - Generate a high-resolution image with crisp, clear details
-    - Ensure the output resolution is at least 1024x1024 pixels for optimal quality
-    - Maintain sharp edges and clear textures throughout the image
-    - Avoid pixelation or blurriness in the final result
-    
-    CRITICAL SPACE PRESERVATION:
-    - NEVER alter, modify, or change the background space/environment in any way
-    - NEVER add, remove, or modify any architectural elements (decks, patios, railings, walls, structures) 
-    - NEVER change the landscaping, grass, plants, trees, or garden features
-    - NEVER alter the ground surfaces, pathways, or hardscaping
-    - NEVER modify existing furniture, outdoor equipment, or objects in the space
-    - ONLY ADD the spa pool to the existing space - everything else must remain identical
-    - The background space is perfect as-is and must not be touched or improved
-    
-    *** CRITICAL: ADD EXACTLY ONE SPA POOL ONLY ***
-    - Place EXACTLY ONE spa pool in the scene - no more, no less
-    - DO NOT add multiple spa pools or hot tubs
-    - DO NOT duplicate or create additional spas
-    - There must be EXACTLY ONE ${spaModel.name} spa pool in the final image
-    
-    *** ABSOLUTELY CRITICAL: SPA APPEARANCE RULES ***
-    - Keep the spa's EXACT original appearance, color, texture, and design unchanged
-    - Do NOT modify the spa's color, finish, or any visual properties
-    - NEVER add any logos, text, or branding to the spa that aren't present in the original spa image
-    - NEVER add MSpa logos, brand names, or any text to the spa surface
-    - NEVER add decals, stickers, or graphics to the spa that aren't in the reference image
-    - If the original spa image shows no logos, the final image must show no logos on the spa
-    - Only reproduce what is actually visible in the original spa reference image - nothing more
-    - DO NOT enhance, improve, or add branding elements to the spa
-    
-    ALIGNMENT AND ORIENTATION RULES:
-    - ALIGN the spa with existing architectural lines and deck geometry
-    - If the deck/patio has straight edges, align the spa parallel to those edges
-    - For square/rectangular spas: orient them to match the deck's lines (not at 45-degree angles unless the deck itself is angled)
-    - For round spas: ensure they complement the space's geometry and don't conflict with linear elements
-    - Follow the natural flow and orientation of the existing structures (decking boards, railings, building walls)
-    - The spa should look like it was professionally installed as part of the original design
-    
-    The spa should be:
-    - Positioned on a flat, stable surface (patio, deck, or concrete area)
-    - CORRECTLY SCALED: The spa measures ${spaModel.dimensions.length}m x ${spaModel.dimensions.width}m x ${spaModel.dimensions.height}m high. Use reference objects in the image (doors, windows, furniture, railings, people, etc.) to ensure accurate real-world scaling. A standard door is ~2m high, windows are typically 1-1.5m wide, outdoor furniture like chairs are ~0.8m high. Scale the spa appropriately using these visual references
-    - Naturally integrated into the environment with realistic shadows and lighting that match the scene
-    - Properly oriented to complement existing architectural features and deck lines
-    - FILLED WITH CLEAR, CLEAN WATER that reflects light naturally and shows gentle water ripples
-    - Water should appear crystal clear and inviting, not empty or dry
-    - MAINTAIN the spa's original color: ${spaModel.selectedColor || 'original color as shown in the spa image'}
-    - NEVER add logos, text, branding, or graphics that aren't in the original spa reference image
-    - REPLICATE EXACTLY what is shown in the spa reference image - no additions or enhancements
-    
-    IMPORTANT: Only change the spa's position, size, and rotation. Keep all other visual aspects (color, texture, materials, design) exactly as they appear in the original spa image. ALWAYS show the spa filled with beautiful, clear water.
-    
-    *** FINAL CRITICAL REMINDER: DO NOT ADD ANY LOGOS OR TEXT TO THE SPA ***
-    The spa must look EXACTLY like the reference image - no logos, no text, no branding additions of any kind.
-    
-    Make it look like the spa naturally belongs in this space and was designed to complement the existing architecture while preserving its authentic appearance and showing it ready for use with clean water.
-    
-    ${lightingPrompt ? `
-    *** CRITICAL LIGHTING TRANSFORMATION ***
-    LOCATION CONTEXT: This scene is set in New Zealand (Southern Hemisphere, Oceania). Apply lighting that is accurate for New Zealand's geographic location, climate, and lighting conditions.
-    
-    ${lightingPrompt}
-    
-    LIGHTING REQUIREMENTS:
-    - The lighting change should be subtle and realistic - avoid oversaturation or dramatic effects
-    - Apply natural lighting appropriate for the time of day with realistic intensity
-    - Adjust sky colors, shadow lengths, surface reflections, and overall atmosphere naturally and subtly
-    - The spa water should reflect the lighting conditions realistically without excessive glare or brightness
-    - Surfaces in the scene should show natural lighting effects for the time of day - keep effects understated
-    - Make the time of day change visible while maintaining natural realism - avoid overstyling
-    - Apply lighting that is geographically accurate for New Zealand conditions with natural subtlety
-    - CRITICAL: Keep all lighting effects natural and understated - avoid oversaturation, excessive drama, or artificial-looking enhancements
-    
-    POSITIONING ABSOLUTE LOCK:
-    - MAINTAIN THE EXACT SAME SPA POSITION, SIZE, AND PLACEMENT - only change lighting/atmosphere
-    - Do not move, resize, or reposition the spa pool - keep it in the exact same location
-    - The spa is already positioned correctly - DO NOT ADJUST ITS PLACEMENT AT ALL
-    - Treat the spa position as completely FIXED and UNCHANGEABLE
-    - Apply lighting changes around the EXISTING spa placement without moving it
-    *** END LIGHTING TRANSFORMATION ***
-    ` : ''}`
+  const prompt = customPrompt || `Place the spa from the second image into the outdoor space shown in the first image.
+
+CRITICAL RULES:
+1. Use EXACTLY the spa shown in the second image - copy its appearance exactly
+2. Do not change the spa's color, design, or add any logos/text to it
+3. Keep the background space exactly as shown - do not modify anything
+4. Place only ONE spa in the scene
+5. Fill the spa with clear water
+6. Size it appropriately for the space (${spaModel.dimensions.length}m x ${spaModel.dimensions.width}m)
+
+Generate a high-quality, realistic image showing this spa naturally integrated into the outdoor space.${lightingPrompt ? ` Apply this lighting: ${lightingPrompt}` : ''}`
 
   const config = {
     responseModalities: ['IMAGE', 'TEXT'] as string[],
@@ -453,157 +360,20 @@ async function fetchImageAsBase64(url: string): Promise<string> {
 function commandToPrompt(command: string, spaModel: SpaModel, lightingPrompt?: string): string {
   const lowerCommand = command.toLowerCase()
   
-  // Handle lighting-only changes
   if (lowerCommand.includes('change lighting only') || lowerCommand.includes('maintain current position')) {
-    let prompt = `
-    *** CRITICAL POSITIONING LOCK ***
-    This is a LIGHTING-ONLY change. The spa pool is already perfectly positioned and MUST NOT BE MOVED AT ALL.
-    
-    ABSOLUTE POSITIONING REQUIREMENTS:
-    - The ${spaModel.name} spa pool MUST remain in its EXACT current position - DO NOT MOVE IT EVEN SLIGHTLY
-    - DO NOT change the spa's size, rotation, or orientation in any way
-    - DO NOT reposition, relocate, or adjust the spa placement at all
-    - The spa is already where it needs to be - ONLY change lighting and atmosphere
-    - IGNORE any impulse to improve or adjust the spa placement - keep it exactly where it is
-    - Use the existing spa as a fixed reference point that cannot be altered
-    
-    LIGHTING CHANGE ONLY:
-    Apply new lighting and atmospheric conditions to the EXISTING scene without moving anything.
-    Transform ONLY the lighting, sky, shadows, reflections, and ambient conditions.
-    Keep everything else (including spa position) exactly as it currently appears.
-    *** END POSITIONING LOCK ***
-    
-    CRITICAL SPACE PRESERVATION FOR LIGHTING CHANGES:
-    - NEVER alter, modify, or change the background space/environment in any way
-    - NEVER add, remove, or modify any architectural elements (decks, patios, railings, walls, structures)
-    - NEVER change the landscaping, grass, plants, trees, or garden features  
-    - NEVER alter the ground surfaces, pathways, or hardscaping
-    - NEVER modify existing furniture, outdoor equipment, or objects in the space
-    - ONLY change lighting conditions - everything else must remain identical
-    - The background space is perfect as-is and must not be touched or improved
-    
-    *** ABSOLUTELY CRITICAL: SPA APPEARANCE RULES ***
-    - Keep the spa's EXACT original appearance, color, texture, and design unchanged
-    - Do NOT modify the spa's color, finish, or any visual properties
-    - NEVER add any logos, text, or branding to the spa that aren't present in the original spa image
-    - NEVER add MSpa logos, brand names, or any text to the spa surface
-    - NEVER add decals, stickers, or graphics to the spa that aren't in the reference image
-    - If the original spa image shows no logos, the final image must show no logos on the spa
-    - Only reproduce what is actually visible in the original spa reference image - nothing more
-    - DO NOT enhance, improve, or add branding elements to the spa
-    `
-    
-    prompt += `
-    IMPORTANT: This is purely a lighting adjustment - NO positioning changes allowed and NO space modifications allowed. Keep all spa aspects (position, size, rotation, color: ${spaModel.selectedColor || 'original'}, texture, materials, design) exactly as they currently appear in the image. Keep ALL background elements exactly as they are.
-    
-    ALWAYS show the spa FILLED WITH CLEAR, CLEAN WATER that reflects the new lighting conditions naturally and shows gentle water ripples. Water should appear crystal clear and inviting, never empty or dry.
-    
-    Apply ONLY the lighting transformation while preserving the spa's exact current position and ensuring it looks natural with the new lighting conditions.`
-    
-    return prompt
+    return `Change only the lighting. Keep everything else exactly the same. Apply: ${lightingPrompt}`
   }
   
-  // Handle regular position adjustments
-  let prompt = `Adjust the placement of the ${spaModel.name} spa pool in the scene. 
+  let prompt = `Adjust the spa position. Keep the spa appearance identical to the reference image. `
   
-  CRITICAL SPACE PRESERVATION:
-  - NEVER alter, modify, or change the background space/environment in any way
-  - NEVER add, remove, or modify any architectural elements (decks, patios, railings, walls, structures)
-  - NEVER change the landscaping, grass, plants, trees, or garden features
-  - NEVER alter the ground surfaces, pathways, or hardscaping  
-  - NEVER modify existing furniture, outdoor equipment, or objects in the space
-  - ONLY reposition the spa pool within the existing space - everything else must remain identical
-  - The background space is perfect as-is and must not be touched or improved
+  if (lowerCommand.includes('left')) prompt += 'Move spa left. '
+  if (lowerCommand.includes('right')) prompt += 'Move spa right. '
+  if (lowerCommand.includes('up') || lowerCommand.includes('back')) prompt += 'Move spa back. '
+  if (lowerCommand.includes('down') || lowerCommand.includes('forward')) prompt += 'Move spa forward. '
   
-  *** CRITICAL: MAINTAIN EXACTLY ONE SPA POOL ***
-  - There is already EXACTLY ONE spa pool in the scene - maintain only that one
-  - DO NOT add additional spa pools or hot tubs
-  - DO NOT duplicate the existing spa
-  - DO NOT create multiple spas
-  - Only adjust the position of the existing single spa pool
+  prompt += 'Do not add logos or change spa design.'
   
-  CRITICAL: Keep the spa's EXACT original appearance, color, texture, and design unchanged. Do NOT modify the spa's color, finish, or any visual properties.
-  
-  ALIGNMENT AND ORIENTATION RULES:
-  - ALIGN the spa with existing architectural lines and deck geometry
-  - If the deck/patio has straight edges, align the spa parallel to those edges
-  - For square/rectangular spas: orient them to match the deck's lines (not at 45-degree angles unless the deck itself is angled)
-  - For round spas: ensure they complement the space's geometry and don't conflict with linear elements
-  - Follow the natural flow and orientation of the existing structures (decking boards, railings, building walls)
-  - The spa should look like it was professionally installed as part of the original design
-  
-  `
-  
-  if (lowerCommand.includes('left')) {
-    prompt += 'Move the spa to the left. '
-  } else if (lowerCommand.includes('right')) {
-    prompt += 'Move the spa to the right. '
-  }
-  
-  if (lowerCommand.includes('up') || lowerCommand.includes('back')) {
-    prompt += 'Move the spa further back in the scene (deeper into the background, away from the camera viewpoint). Position it further away from the viewer, making it appear more distant and smaller due to perspective. This creates depth by moving the spa toward the back of the outdoor space. '
-  } else if (lowerCommand.includes('down') || lowerCommand.includes('forward')) {
-    prompt += 'Move the spa closer to the foreground (nearer to the camera viewpoint). Position it closer to the viewer, making it appear larger and more prominent due to perspective. This brings the spa toward the front of the outdoor space, closer to where someone would be standing to take the photo. '
-  }
-  
-  if (lowerCommand.includes('rotate')) {
-    const angleMatch = lowerCommand.match(/(\d+)/)
-    if (angleMatch) {
-      prompt += `Rotate the spa by ${angleMatch[1]} degrees. `
-    } else {
-      prompt += 'Rotate the spa 45 degrees. '
-    }
-  }
-  
-  if (lowerCommand.includes('smaller') || lowerCommand.includes('shrink')) {
-    prompt += 'Make the spa smaller. '
-  } else if (lowerCommand.includes('larger') || lowerCommand.includes('bigger')) {
-    prompt += 'Make the spa larger. '
-  }
-  
-  if (lowerCommand.includes('deck')) {
-    prompt += 'Place the spa on or near the deck. '
-  } else if (lowerCommand.includes('patio')) {
-    prompt += 'Place the spa on the patio. '
-  } else if (lowerCommand.includes('grass') || lowerCommand.includes('lawn')) {
-    prompt += 'Place the spa on the grass/lawn area. '
-  }
-  
-  prompt += `
-  
-  IMPORTANT: Only change the spa's position, size, and rotation. Keep all other visual aspects (color: ${spaModel.selectedColor || 'original'}, texture, materials, design) exactly as they appear in the original spa image.
-  
-  *** CRITICAL: NO LOGO/TEXT ADDITIONS TO SPA ***
-  Do NOT add any logos, text, branding, decals, or graphics to the spa that aren't in the original reference image. The spa must look exactly like the reference - nothing added.
-  
-  ALWAYS show the spa FILLED WITH CLEAR, CLEAN WATER that reflects light naturally and shows gentle water ripples. Water should appear crystal clear and inviting, never empty or dry.
-  
-  Ensure the spa looks natural, properly lit, and fully integrated into the scene with appropriate shadows while preserving its authentic appearance and showing it ready for use with beautiful water. The spa should appear professionally installed and aligned with the existing architectural features and deck geometry.
-  
-  ${lightingPrompt ? `
-  *** CRITICAL LIGHTING TRANSFORMATION ***
-  LOCATION CONTEXT: This scene is set in New Zealand (Southern Hemisphere, Oceania). Apply lighting that is accurate for New Zealand's geographic location, climate, and lighting conditions.
-  
-  ${lightingPrompt}
-  
-  LIGHTING REQUIREMENTS:
-  - The lighting change should be subtle and realistic - avoid oversaturation or dramatic effects
-  - Apply natural lighting appropriate for the time of day with realistic intensity
-  - Adjust sky colors, shadow lengths, surface reflections, and overall atmosphere naturally and subtly
-  - The spa water should reflect the lighting conditions realistically without excessive glare or brightness
-  - Surfaces in the scene should show natural lighting effects for the time of day - keep effects understated
-  - Make the time of day change visible while maintaining natural realism - avoid overstyling
-  - Apply lighting that is geographically accurate for New Zealand conditions with natural subtlety
-  - CRITICAL: Keep all lighting effects natural and understated - avoid oversaturation, excessive drama, or artificial-looking enhancements
-  
-  POSITIONING ABSOLUTE LOCK:
-  - MAINTAIN THE EXACT SAME SPA POSITION, SIZE, AND PLACEMENT - only change lighting/atmosphere
-  - Do not move, resize, or reposition the spa pool - keep it in the exact same location
-  - The spa is already positioned correctly - DO NOT ADJUST ITS PLACEMENT AT ALL
-  - Treat the spa position as completely FIXED and UNCHANGEABLE
-  - Apply lighting changes around the EXISTING spa placement without moving it
-  *** END LIGHTING TRANSFORMATION ***
-  ` : ''}`
+  if (lightingPrompt) prompt += ` Apply lighting: ${lightingPrompt}`
   
   return prompt
 }
